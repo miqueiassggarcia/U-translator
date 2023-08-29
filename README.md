@@ -1,4 +1,4 @@
-# utranslator
+# U-translator
 
 A new Flutter project.
 
