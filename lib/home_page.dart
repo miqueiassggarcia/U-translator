@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:utranslator/about_page.dart';
-import 'package:utranslator/configuration-page.dart';
-import 'package:utranslator/phrase-page.dart';
+import 'package:utranslator/configuration_page.dart';
+import 'package:utranslator/phrase_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,20 +16,21 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text('Home'),
+          title: const Text('Home'),
           centerTitle: true,
         ),
-        drawer: const NavigationDrawer(),
+        drawer: const Navigation(),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Text(
-                'You have pushed the button this many times:',
+              Text(
+                'Use o botão no canto inferior direito',
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
               Text(
-                '1',
-                style: Theme.of(context).textTheme.headlineMedium,
+                'e abra o seu primeiro arquivo',
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
             ],
           ),
@@ -42,8 +43,8 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class NavigationDrawer extends StatelessWidget {
-  const NavigationDrawer({super.key});
+class Navigation extends StatelessWidget {
+  const Navigation({super.key});
 
   @override
   Widget build(BuildContext context) => Drawer(
@@ -82,10 +83,7 @@ class NavigationDrawer extends StatelessWidget {
               Navigator.pop(context);
 
               Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const PhrasePage()
-                )
-              );
+                  MaterialPageRoute(builder: (context) => const PhrasePage()));
             },
           ),
           ListTile(
@@ -101,10 +99,7 @@ class NavigationDrawer extends StatelessWidget {
               Navigator.pop(context);
 
               Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const ConfigPage()
-                )
-              );
+                  MaterialPageRoute(builder: (context) => const ConfigPage()));
             },
           ),
           ListTile(
@@ -114,10 +109,7 @@ class NavigationDrawer extends StatelessWidget {
               Navigator.pop(context);
 
               Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const AboutPage()
-                )
-              );
+                  MaterialPageRoute(builder: (context) => const AboutPage()));
             },
           ),
         ],
