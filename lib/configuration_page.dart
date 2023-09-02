@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:utranslator/home_page.dart';
+import 'package:utranslator/navigation.dart';
 
 class ConfigPage extends StatelessWidget {
   const ConfigPage({super.key});

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:utranslator/home_page.dart';
+import 'package:utranslator/navigation.dart';
 
 class PhrasePage extends StatelessWidget {
   const PhrasePage({super.key});
