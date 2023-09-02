@@ -1,49 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:utranslator/about_page.dart';
-import 'package:utranslator/configuration_page.dart';
-import 'package:utranslator/home_page.dart';
-import 'package:utranslator/phrase_page.dart';
+import 'package:utranslator/pages/about_page.dart';
+import 'package:utranslator/pages/configuration_page.dart';
+import 'package:utranslator/pages/home_page.dart';
+import 'package:utranslator/pages/phrase_page.dart';
 
-class Navigation extends StatelessWidget {
-  const Navigation({super.key});
-
-  @override
-  Widget build(BuildContext context) => Drawer(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              buildHeader(context),
-              buildMenuItems(context),
-            ],
-          ),
-        ),
-      );
-
-  Widget buildHeader(BuildContext context) => Container(
-        color: Theme.of(context).colorScheme.inversePrimary,
-        padding: EdgeInsets.only(
-          top: MediaQuery.of(context).padding.top,
-        ),
-        child: Column(children: [
-          const CircleAvatar(
-            radius: 40,
-            backgroundImage: ExactAssetImage('assets/images/Logo.png'),
-          ),
-          const SizedBox(
-            height: 12,
-          ),
-          Text(
-            'U-translator',
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-          const SizedBox(
-            height: 12,
-          ),
-        ]),
-      );
-
-  Widget buildMenuItems(BuildContext context) => Container(
+Widget buildMenuItems(BuildContext context) => Container(
       padding: const EdgeInsets.all(24),
       child: Wrap(
         runSpacing: 8,
@@ -92,4 +53,3 @@ class Navigation extends StatelessWidget {
           ),
         ],
       ));
-}
