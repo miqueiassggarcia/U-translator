@@ -53,21 +53,12 @@ class _HomePageState extends State<HomePage> {
                 ),
               );
             }
-            // if (result == null) return null;
-
-            // final file = result.files.first;
-            // openFile(file);
           },
           tooltip: 'open file',
           child: const Icon(Icons.folder),
         ));
   }
-  // void openFile(PlatformFile file) {
-  //   OpenFile.open(file.path!);
-  // }
-  
 }
-
 class PDFViewerPage extends StatelessWidget {
   final String? pdfPath;
 
