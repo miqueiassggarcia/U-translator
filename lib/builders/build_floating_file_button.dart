@@ -4,6 +4,7 @@ import 'package:utranslator/controllers/home_page_body_controller.dart';
 
 class FloatingFileButton extends StatelessWidget {
   const FloatingFileButton({super.key});
+  get controller => HomePageBodyController();
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,7 @@ class FloatingFileButton extends StatelessWidget {
         );
         if (result != null) {
           var pdfFile = result.files.single.path;
-          HomePageBodyController().changeBody(1, pdfFile);
+          controller.changeBody(0, pdfFile);
         }
       },
       tooltip: 'open file',

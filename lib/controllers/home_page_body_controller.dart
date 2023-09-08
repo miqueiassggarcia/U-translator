@@ -3,17 +3,15 @@ import 'package:utranslator/builders/build_inicial_home_text.dart';
 import 'package:utranslator/builders/build_pdf_viewer.dart';
 
 class HomePageBodyController extends ChangeNotifier {
-  static HomePageBodyController instance = HomePageBodyController();
-
   bool buttonIsActive = true;
-  Widget bodyContent = const HomePageInitialText();
+  Widget currentBody = HomePageInitialText();
 
   changeBody(int index, String? pdfPath) {
     if (index == 0) {
-      bodyContent = const HomePageInitialText();
+      currentBody = const HomePageInitialText();
       notifyListeners();
-    } else if (index == 1) {
-      bodyContent = PDFViewerBody(pdfPath: pdfPath);
+    } else if (index == 1 && pdfPath != null) {
+      currentBody = PDFViewerBody(pdfPath: pdfPath);
       buttonIsActive = false;
       notifyListeners();
     }

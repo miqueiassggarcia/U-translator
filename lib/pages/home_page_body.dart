@@ -1,7 +1,5 @@
-import 'dart:math';
-
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:utranslator/builders/build_floating_file_button.dart';
 import 'package:utranslator/controllers/home_page_body_controller.dart';
 
 class HomePage extends StatefulWidget {
@@ -12,20 +10,37 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String? pdfPath;
-  int myIndex = 0;
-  final animation = Tween(begin: 0, end: 2 * pi).animate(kAlwaysCompleteAnimation);
+  final controller = HomePageBodyController();
+
+  Widget get currentBody => controller.currentBody;
+  bool get buttonIsActive => controller.buttonIsActive;
 
   @override
-  Widget build(BuildContext context) =>
-      AnimatedBuilder(
-        animation: animation,
-        builder: (context, child) {
-        return Scaffold(
-          body: HomePageBodyController().bodyContent,
-          floatingActionButton: HomePageBodyController().buttonIsActive
-              ? const FloatingFileButton()
-              : null,
-        );
-      });
+  void initState() {
+    super.initState();
+    controller.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        body: currentBody,
+        floatingActionButton: buttonIsActive
+            ? FloatingActionButton(
+                onPressed: () async {
+                  final result = await FilePicker.platform.pickFiles(
+                    type: FileType.custom,
+                    allowedExtensions: ['pdf'],
+                  );
+                  if (result != null) {
+                    var pdfFile = result.files.single.path;
+                    controller.changeBody(1, pdfFile);
+                  }
+                },
+                tooltip: 'open file',
+                child: const Icon(Icons.folder),
+              )
+            : null,
+      );
 }
