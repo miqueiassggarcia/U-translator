@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
-import 'package:invert_colors/invert_colors.dart';
 
 class PDFViewerBody extends StatelessWidget {
   final String? pdfPath;
@@ -9,9 +8,8 @@ class PDFViewerBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InvertColors(
-        child: PDFView(
+    return PDFView(
       filePath: pdfPath,
-    ));
+    );
   }
 }
