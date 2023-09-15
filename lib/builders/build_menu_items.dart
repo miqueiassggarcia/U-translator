@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:utranslator/pages/about_page.dart';
 import 'package:utranslator/pages/configuration_page.dart';
-import 'package:utranslator/pages/home_page.dart';
-import 'package:utranslator/pages/phrase_page.dart';
-import 'package:utranslator/pages/pdf_history.dart';
+import 'package:utranslator/pages/initial_page.dart';
 
 Widget buildMenuItems(BuildContext context) => Container(
       padding: const EdgeInsets.all(24),
@@ -14,27 +12,7 @@ Widget buildMenuItems(BuildContext context) => Container(
             leading: const Icon(Icons.home_outlined),
             title: const Text('Home'),
             onTap: () => Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => const HomePage())),
-          ),
-          ListTile(
-            leading: const Icon(Icons.picture_as_pdf),
-            title: const Text('Histórico'),
-            onTap: () {
-              Navigator.pop(context);
-
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const PdfHistory()));
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.text_fields),
-            title: const Text('Frases'),
-            onTap: () {
-              Navigator.pop(context);
-
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const PhrasePage()));
-            },
+                MaterialPageRoute(builder: (context) => const InitialPage())),
           ),
           ListTile(
             leading: const Icon(Icons.workspace_premium),
