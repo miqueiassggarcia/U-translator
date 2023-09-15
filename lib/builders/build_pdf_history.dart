@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:utranslator/builders/build_pdf_viewer.dart';
 import 'package:path/path.dart';
-import 'package:utranslator/pages/initial_page.dart';
 
 class PdfHistory extends StatelessWidget {
-  const PdfHistory({super.key});
+  const PdfHistory({super.key, required this.callbackFunction});
+  final Function callbackFunction;
 
   @override
   Widget build(BuildContext context) {
@@ -37,11 +37,7 @@ class PdfHistory extends StatelessWidget {
                   ],
                 ),
                 onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => InitialPage(),
-                    ),
-                  );
+                  callbackFunction(pdfPath);
                 },
               );
             },

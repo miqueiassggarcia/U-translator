@@ -18,15 +18,15 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    controller.getIfThePDFHasAlreadyBeenOpen();
+    controller.getIfThePDFHasAlreadyBeenOpen(callbackPdfView);
     controller.addListener(() {
       setState(() {});
     });
   }
 
-  void callback(int index, String pdfPath) {
+  void callbackPdfView(String pdfPath) {
     setState(() {
-      controller.changeBody(index, pdfPath);
+      controller.changeBodyToPdfView(pdfPath);
     });
   }
 
@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) => Scaffold(
         body: currentBody,
         floatingActionButton: buttonIsActive
-            ? FloatingFileButton(callbackFunction: callback)
+            ? FloatingFileButton(callbackFunction: callbackPdfView)
             : null,
       );
 }

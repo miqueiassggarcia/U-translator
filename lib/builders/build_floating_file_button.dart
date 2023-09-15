@@ -15,7 +15,7 @@ class FloatingFileButton extends StatelessWidget {
         );
         if (result != null) {
           var pdfFile = result.files.single.path;
-          callbackFunction(1, pdfFile);
+          callbackFunction(pdfFile);
         }
       },
       tooltip: 'open file',

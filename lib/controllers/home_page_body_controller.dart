@@ -10,14 +10,16 @@ class HomePageBodyController extends ChangeNotifier {
 
   static const _key = 'if_pdf_is_already_open';
 
-  Future<void> getIfThePDFHasAlreadyBeenOpen() async {
+  Future<void> getIfThePDFHasAlreadyBeenOpen(Function callbackFunction) async {
     final prefs = await SharedPreferences.getInstance();
     final isAlreadyOpen = prefs.getBool(_key) ?? false;
     if (!isAlreadyOpen) {
       currentBody = const HomePageInitialText();
       notifyListeners();
     } else {
-      currentBody = const PdfHistory();
+      currentBody = PdfHistory(
+        callbackFunction: callbackFunction,
+      );
       notifyListeners();
     }
   }
@@ -28,20 +30,11 @@ class HomePageBodyController extends ChangeNotifier {
     await prefs.setBool(_key, isOpen);
   }
 
-  changeBody(int index, String? pdfPath) {
-    if (index == 0) {
-      currentBody = const HomePageInitialText();
-      notifyListeners();
-    } else if (index == 1 && pdfPath != null) {
-      currentBody = PDFViewerBody(pdfPath: pdfPath);
-      buttonIsActive = false;
-      setIfThePDFHasAlreadyBeenOpen(true);
-      notifyListeners();
-    } else if (index == 2) {
-      currentBody = const PdfHistory();
-      buttonIsActive = false;
-      notifyListeners();
-    }
+  changeBodyToPdfView(String pdfPath) {
+    currentBody = PDFViewerBody(pdfPath: pdfPath);
+    buttonIsActive = false;
+    setIfThePDFHasAlreadyBeenOpen(true);
+    notifyListeners();
   }
 }
 
