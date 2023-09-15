@@ -1,10 +1,9 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:utranslator/controllers/home_page_body_controller.dart';
 
 class FloatingFileButton extends StatelessWidget {
-  const FloatingFileButton({super.key});
-  get controller => HomePageBodyController();
+  const FloatingFileButton({super.key, required this.callbackFunction});
+  final Function callbackFunction;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +15,7 @@ class FloatingFileButton extends StatelessWidget {
         );
         if (result != null) {
           var pdfFile = result.files.single.path;
-          controller.changeBody(0, pdfFile);
+          callbackFunction(1, pdfFile);
         }
       },
       tooltip: 'open file',

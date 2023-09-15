@@ -1,5 +1,6 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:utranslator/builders/build_floating_file_button.dart';
 import 'package:utranslator/controllers/home_page_body_controller.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,24 +24,54 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void callback(int index, String pdfPath) {
+    setState(() {
+      controller.changeBody(index, pdfPath);
+    });
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: currentBody,
-        floatingActionButton: buttonIsActive
-            ? FloatingActionButton(
-                onPressed: () async {
-                  final result = await FilePicker.platform.pickFiles(
-                    type: FileType.custom,
-                    allowedExtensions: ['pdf'],
-                  );
-                  if (result != null) {
-                    var pdfFile = result.files.single.path;
-                    controller.changeBody(1, pdfFile);
-                  }
-                },
-                tooltip: 'open file',
-                child: const Icon(Icons.folder),
-              )
-            : null,
-      );
+      body: FutureBuilder<bool>(
+          future: IfPDFIsAlreadyOpen.getIfPDFIsAlreadyOpen(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            } else if (snapshot.hasError) {
+              return Text(
+                  'Erro ao carregar estado da página: ${snapshot.error}');
+            } else if (!snapshot.hasData) {
+              return Text('Nenhum dado de estado.');
+            } else {
+              if (snapshot.data!) {
+                controller.changeBody(2, null);
+              } else {
+                controller.changeBody(0, null);
+              }
+            }
+            return Scaffold (
+              body: currentBody,
+              floatingActionButton: buttonIsActive
+                  ? FloatingFileButton(callbackFunction: callback)
+                  : null,
+            );
+          }));
+}
+
+class IfPDFIsAlreadyOpen {
+  static const _key = 'if_pdf_is_already_open';
+
+  static Future<bool> getIfPDFIsAlreadyOpen() async {
+    final prefs = await SharedPreferences.getInstance();
+    final isAlreadyOpen = prefs.getBool(_key) ?? false;
+    return isAlreadyOpen;
+  }
+
+  static Future<bool> addIfPDFIsAlreadyOpen(bool isOpen) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setBool(_key, isOpen);
+
+    return isOpen;
+  }
 }

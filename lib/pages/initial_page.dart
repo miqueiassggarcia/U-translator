@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:utranslator/navigation/navigation.dart';
 import 'package:utranslator/pages/home_page_body.dart';
-import 'package:utranslator/pages/phrase_page_body.dart';
+import 'package:utranslator/builders/build_initial_text.dart';
 
 class InitialPage extends StatefulWidget {
   const InitialPage({super.key});
