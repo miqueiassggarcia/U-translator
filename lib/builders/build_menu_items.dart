@@ -14,11 +14,6 @@ Widget buildMenuItems(BuildContext context) => Container(
             onTap: () => Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (context) => const InitialPage())),
           ),
-          ListTile(
-            leading: const Icon(Icons.workspace_premium),
-            title: const Text('Premium'),
-            onTap: () {},
-          ),
           const Divider(color: Colors.black54),
           ListTile(
             leading: const Icon(Icons.settings),
