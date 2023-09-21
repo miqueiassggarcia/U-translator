@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:utranslator/builders/build_pdf_viewer.dart';
 import 'package:path/path.dart';
+import 'package:pdf_thumbnail/pdf_thumbnail.dart';
 
 class PdfHistory extends StatelessWidget {
   const PdfHistory({super.key, required this.callbackFunction});
@@ -29,13 +30,11 @@ class PdfHistory extends StatelessWidget {
                   ? pdfFileName.substring(0, maxLength) + '...'
                   : pdfFileName;
               return ListTile(
-                title: Row(
-                  children: [
-                    const Icon(Icons.picture_as_pdf),
-                    const SizedBox(width: 8),
-                    Text(displayedFileName),
-                  ],
+                leading: SizedBox(
+                  width: 50,
+                  child: PdfThumbnail.fromFile(pdfPath, currentPage: 1,height: 50,backgroundColor:Colors.white,),
                 ),
+                title: Text(displayedFileName),
                 onTap: () {
                   callbackFunction(pdfPath);
                 },
