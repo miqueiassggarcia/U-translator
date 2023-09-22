@@ -43,6 +43,7 @@ dependencies:
   path_provider: ^2.1.1
   open_file: ^3.3.2
   shared_preferences: ^2.2.1
+  syncfusion_flutter_pdfviewer: ^23.1.36
 
 dev_dependencies:
   flutter_test:
