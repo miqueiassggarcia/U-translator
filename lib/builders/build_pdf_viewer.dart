@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:utranslator/context/darkmode.dart';
 
 class PDFViewerBody extends StatelessWidget {
   final String? pdfPath;
@@ -15,6 +16,7 @@ class PDFViewerBody extends StatelessWidget {
 
     return PDFView(
       filePath: pdfPath,
+      nightMode: context.isDarkMode,
     );
   }
 }
