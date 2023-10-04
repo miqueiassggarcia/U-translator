@@ -1,21 +1,56 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class PDFViewerBody extends StatelessWidget {
   final String? pdfPath;
+  OverlayEntry? _overlayEntry;
+  File? _file;
 
-  const PDFViewerBody({Key? key, this.pdfPath}) : super(key: key);
+  PDFViewerBody({Key? key, this.pdfPath}) : super(key: key);
+
+  void _showContextMenu(BuildContext context, PdfTextSelectionChangedDetails details) {
+    final OverlayState _overlayState = Overlay.of(context);
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        top: details.globalSelectedRegion!.center.dy - 55,
+        left: details.globalSelectedRegion!.bottomLeft.dx,
+        child: ElevatedButton(
+          onPressed: () {
+            
+          }, child: null,
+        ),
+      )
+    );
+
+    _overlayState.insert(_overlayEntry!);
+  }
+
 
   @override
   Widget build(BuildContext context) {
     if (pdfPath != null) {
       PDFHistory.addToHistory(pdfPath!);
+      _file = File(pdfPath!);
     }
 
-    return PDFView(
-      filePath: pdfPath,
-    );
+    return SfPdfViewer.file(
+          _file!,
+          onTextSelectionChanged: (PdfTextSelectionChangedDetails details) {
+            if (details.selectedText == null && _overlayEntry != null) {
+              _overlayEntry!.remove();
+              _overlayEntry = null;
+            } else if (details.selectedText != null && _overlayEntry == null) {
+              _showContextMenu(context, details);
+            }
+          },
+        );
+    //return PDFView(
+    //  filePath: pdfPath,
+    //);
   }
 }
 
