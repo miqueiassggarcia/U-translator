@@ -256,6 +256,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.18.1"
+  invert_colors:
+    dependency: "direct main"
+    description:
+      name: invert_colors
+      sha256: "66e0063c64554cb5dca9f8017cc5095c762cbf766616d45f242a6b2b9c068cb9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.4"
   js:
     dependency: transitive
     description:

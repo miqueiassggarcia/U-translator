@@ -37,7 +37,8 @@ class PDFViewerBody extends StatelessWidget {
     }
 
     return context.isDarkMode
-        ? InvertColors(SfPdfViewer.file(
+        ? InvertColors(
+            child: SfPdfViewer.file(
             _file!,
             onTextSelectionChanged: (PdfTextSelectionChangedDetails details) {
               if (details.selectedText == null && _overlayEntry != null) {
