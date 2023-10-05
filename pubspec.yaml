@@ -48,6 +48,7 @@ dependencies:
   shared_preferences: ^2.2.1
   syncfusion_flutter_pdfviewer: ^23.1.36
   pdf_thumbnail: ^0.1.5+1
+  invert_colors: ^0.0.4
 
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1

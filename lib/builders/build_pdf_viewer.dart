@@ -1,9 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:utranslator/context/darkmode.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:invert_colors/invert_colors.dart';
 
 class PDFViewerBody extends StatelessWidget {
   final String? pdfPath;
@@ -12,23 +13,21 @@ class PDFViewerBody extends StatelessWidget {
 
   PDFViewerBody({Key? key, this.pdfPath}) : super(key: key);
 
-  void _showContextMenu(BuildContext context, PdfTextSelectionChangedDetails details) {
+  void _showContextMenu(
+      BuildContext context, PdfTextSelectionChangedDetails details) {
     final OverlayState _overlayState = Overlay.of(context);
     _overlayEntry = OverlayEntry(
-      builder: (context) => Positioned(
-        top: details.globalSelectedRegion!.center.dy - 55,
-        left: details.globalSelectedRegion!.bottomLeft.dx,
-        child: ElevatedButton(
-          onPressed: () {
-            
-          }, child: null,
-        ),
-      )
-    );
+        builder: (context) => Positioned(
+              top: details.globalSelectedRegion!.center.dy - 55,
+              left: details.globalSelectedRegion!.bottomLeft.dx,
+              child: ElevatedButton(
+                onPressed: () {},
+                child: null,
+              ),
+            ));
 
     _overlayState.insert(_overlayEntry!);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -37,24 +36,39 @@ class PDFViewerBody extends StatelessWidget {
       _file = File(pdfPath!);
     }
 
-    return SfPdfViewer.file(
-          _file!,
-          onTextSelectionChanged: (PdfTextSelectionChangedDetails details) {
-            if (details.selectedText == null && _overlayEntry != null) {
-              _overlayEntry!.remove();
-              _overlayEntry = null;
-            } else if (details.selectedText != null && _overlayEntry == null) {
-              _showContextMenu(context, details);
-            }
-          },
-        );
+    return context.isDarkMode
+        ? InvertColors(
+            child: SfPdfViewer.file(
+            _file!,
+            onTextSelectionChanged: (PdfTextSelectionChangedDetails details) {
+              if (details.selectedText == null && _overlayEntry != null) {
+                _overlayEntry!.remove();
+                _overlayEntry = null;
+              } else if (details.selectedText != null &&
+                  _overlayEntry == null) {
+                _showContextMenu(context, details);
+              }
+            },
+          ))
+        : SfPdfViewer.file(
+            _file!,
+            onTextSelectionChanged: (PdfTextSelectionChangedDetails details) {
+              if (details.selectedText == null && _overlayEntry != null) {
+                _overlayEntry!.remove();
+                _overlayEntry = null;
+              } else if (details.selectedText != null &&
+                  _overlayEntry == null) {
+                _showContextMenu(context, details);
+              }
+            },
+          );
     //return PDFView(
     //  filePath: pdfPath,
     //);
   }
 }
 
-class PDFHistory{
+class PDFHistory {
   static const _key = 'pdf_history';
 
   static Future<List<String>> getHistory() async {
