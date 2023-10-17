@@ -280,6 +280,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.8.1"
+  lecle_flutter_absolute_path:
+    dependency: "direct main"
+    description:
+      name: lecle_flutter_absolute_path
+      sha256: a9e6ddde2b81756031b39b33d0ea8fd79a5d7874d45ddb40d299c75333f98ae4
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2+1"
   lints:
     dependency: transitive
     description:
@@ -432,6 +440,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.7.3"
+  receive_intent:
+    dependency: "direct main"
+    description:
+      name: receive_intent
+      sha256: "84671fa21d7fdbe38c1a658f3b7656afd5e9852e99f25ce6ff80fd5f04cc8b53"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.4"
   shared_preferences:
     dependency: "direct main"
     description:
