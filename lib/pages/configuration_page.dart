@@ -42,7 +42,8 @@ class _ConfigPageState extends State<ConfigPage> {
                         ? const Icon(Icons.dark_mode)
                         : const Icon(Icons.light_mode),
                     onChanged: (bool value) {
-                      final provider = Provider.of<AppThemeProvider>(context, listen: false);
+                      final provider =
+                          Provider.of<AppThemeProvider>(context, listen: false);
                       provider.toggleTheme(value);
                     },
                   )),
@@ -56,7 +57,8 @@ class _ConfigPageState extends State<ConfigPage> {
                         ? const Icon(Icons.dark_mode)
                         : const Icon(Icons.light_mode),
                     onChanged: (bool value) {
-                      final provider = Provider.of<AppThemeProvider>(context, listen: false);
+                      final provider =
+                          Provider.of<AppThemeProvider>(context, listen: false);
                       provider.toggleTheme(value);
                     },
                   )),
