@@ -10,8 +10,15 @@ import 'package:lecle_flutter_absolute_path/lecle_flutter_absolute_path.dart';
 import 'package:utranslator/builders/build_pdf_history.dart';
 import 'package:utranslator/pages/home_page_body.dart';
 
-void main() {
-  runApp(MyWidget());
+void main() async{
+  runApp(const MyApp());
+  final receivedIntent = await ReceiveIntent.getInitialIntent();
+  if (receivedIntent != null){
+    if (receivedIntent.action == 'android.intent.action.VIEW' && receivedIntent.data != null ){
+      runApp(const MyWidget());
+    }
+  }
+  // runApp(const MyWidget());
 }
 
 
@@ -37,24 +44,33 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   late File _file;
+  
+  @override
+  void initState() {
+    super.initState();
+    _intentFile();
+  }
 
 
   Future<void> _intentFile() async {
   final receivedIntent = await ReceiveIntent.getInitialIntent();
-  final controller = HomePageBodyController();
+  // final controller = HomePageBodyController();
   // final viwer = PDFViewerBody();
   if (receivedIntent != null) {
-    print("teste");
-    final pdfPath = receivedIntent.data!; // Extrai o caminho do arquivo da query do URL
-    var path = await LecleFlutterAbsolutePath.getAbsolutePath(uri: pdfPath, fileExtension: "pdf");
-    File url = File(path!);
-    setState(() {
-      _file = url;
-    });
-    // print(url);
-    // runApp(PDFViewerBody(pdfPath: path!));
-    // PDFViewerBody(pdfPath: path);
-    // controller.changeBodyToPdfView(path!);
+    if (receivedIntent.action == 'android.intent.action.VIEW' && receivedIntent.data != null ){
+      print("teste");
+      print(receivedIntent);
+      final pdfPath = receivedIntent.data!; // Extrai o caminho do arquivo da query do URL
+      var path = await LecleFlutterAbsolutePath.getAbsolutePath(uri: pdfPath, fileExtension: "pdf");
+      File url = File(path!);
+      setState(() {
+        _file = url;
+      });
+      // print(url);
+      // runApp(PDFViewerBody(pdfPath: path!));
+      // PDFViewerBody(pdfPath: path);
+      // controller.changeBodyToPdfView(path);
+    }
   }
 }
 
@@ -69,5 +85,3 @@ class _HomeState extends State<Home> {
 // void initState() {
 //   initState();
 //   }
-
-
