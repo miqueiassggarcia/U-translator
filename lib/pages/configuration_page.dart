@@ -47,29 +47,6 @@ class _ConfigPageState extends State<ConfigPage> {
                       provider.toggleTheme(value);
                     },
                   )),
-              Container(
-                  height: height! / 10,
-                  width: width!,
-                  child: SwitchListTile(
-                    title: const Text("Mudar tema"),
-                    value: themeProvider.isDarkMode,
-                    secondary: themeProvider.isDarkMode
-                        ? const Icon(Icons.dark_mode)
-                        : const Icon(Icons.light_mode),
-                    onChanged: (bool value) {
-                      final provider =
-                          Provider.of<AppThemeProvider>(context, listen: false);
-                      provider.toggleTheme(value);
-                    },
-                  )),
-              Container(
-                  height: height! / 10,
-                  width: width!,
-                  child: ListView(children: [
-                    themeProvider.isDarkMode
-                        ? const Text("Verdade")
-                        : const Text("Falso")
-                  ])),
             ])));
   }
 }
