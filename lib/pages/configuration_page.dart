@@ -15,13 +15,13 @@ class _ConfigPageState extends State<ConfigPage> {
   double? width;
 
   List<String> items = ["Tema do sistema", "Darkmode", "Lightmode"];
-  String? selectedItem = "Tema do sistema";
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<AppThemeProvider>(context);
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
+    String? selectedItem = themeProvider.currentTheme;
 
     return Scaffold(
         drawer: const Navigation(),
@@ -63,15 +63,60 @@ class _ConfigPageState extends State<ConfigPage> {
                                                 style: TextStyle(fontSize: 20)),
                                           ))
                                       .toList(),
-                                  onChanged: (item) =>
-                                      setState(() => {
-                                        if(item == "Darkmode") {
-                                          themeProvider.toggleTheme("dark")
-                                        } else if(item == "Lightmode") {
-                                          themeProvider.toggleTheme("light")
-                                        } else {
-                                          themeProvider.toggleTheme("system")
-                                        },
+                                  onChanged: (item) => setState(() => {
+                                        if (item == "Darkmode")
+                                          {
+                                            themeProvider
+                                                .toggleTheme("Darkmode")
+                                          }
+                                        else if (item == "Lightmode")
+                                          {
+                                            themeProvider
+                                                .toggleTheme("Lightmode")
+                                          }
+                                        else
+                                          {
+                                            themeProvider
+                                                .toggleTheme("Tema do sistema")
+                                          },
+                                        selectedItem = item
+                                      }))))),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Align(
+                      alignment: Alignment.centerLeft,
+                      child: SizedBox(
+                          height: height! / 10,
+                          width: width! / 2,
+                          child: Center(
+                              child: Text("Tema padrão",
+                                  style: TextStyle(fontSize: 24))))),
+                  Align(
+                      alignment: Alignment.centerLeft,
+                      child: SizedBox(
+                          height: height! / 10,
+                          width: width! / 2,
+                          child: Center(
+                              child: DropdownButton<String>(
+                                  value: selectedItem,
+                                  items: items
+                                      .map((item) => DropdownMenuItem<String>(
+                                            value: item,
+                                            child: Text(item,
+                                                style: TextStyle(fontSize: 20)),
+                                          ))
+                                      .toList(),
+                                  onChanged: (item) => setState(() => {
+                                        if (item == "Darkmode")
+                                          {themeProvider.toggleTheme("dark")}
+                                        else if (item == "Lightmode")
+                                          {themeProvider.toggleTheme("light")}
+                                        else
+                                          {themeProvider.toggleTheme("system")},
                                         selectedItem = item
                                       }))))),
                 ],

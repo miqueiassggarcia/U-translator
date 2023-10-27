@@ -3,29 +3,47 @@ import 'package:flutter/scheduler.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // import 'package:shared_preferences/shared_preferences.dart';
 
 class AppThemeProvider extends ChangeNotifier {
-  ThemeMode themeOfSystem = ThemeMode.system;
+  late String currentTheme;
+  late ThemeMode themeMode;
 
   AppThemeProvider() {
+    currentTheme = "Tema do sistema";
+    themeMode = ThemeMode.system;
     getThemePreferences();
   }
 
   getThemePreferences() async {
-    themeOfSystem = await ThemePreferences().getTheme();
+    currentTheme = await ThemePreferences().getTheme();
+    setMode(currentTheme);
+
+    notifyListeners();
+  }
+
+  setMode(String theme) {
+    if (theme == "Darkmode") {
+      themeMode = ThemeMode.dark;
+    } else if (theme == "Lightmode") {
+      themeMode = ThemeMode.light;
+    } else {
+      themeMode = ThemeMode.system;
+    }
   }
 
   bool get isDarkMode {
-    return themeOfSystem == ThemeMode.dark;
+    if (currentTheme != "Tema do sistema") {
+      return currentTheme == "Darkmode";
+    } else {
+      var brightness =
+          SchedulerBinding.instance.platformDispatcher.platformBrightness;
+      return brightness == Brightness.dark;
+    }
   }
 
   void toggleTheme(String theme) {
-    if (theme == "dark") {
-      themeOfSystem = ThemeMode.dark;
-    } else if (theme == "light") {
-      themeOfSystem = ThemeMode.light;
-    } else {
-      themeOfSystem = ThemeMode.system;
-    }
+    setMode(theme);
+    currentTheme = theme;
     ThemePreferences().setTheme(theme);
+
     notifyListeners();
   }
 }
@@ -38,20 +56,14 @@ class ThemePreferences {
     sharedPreferences.setString(key, value);
   }
 
-  Future<ThemeMode> getTheme() async {
+  Future<String> getTheme() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String? theme = sharedPreferences.getString(key);
 
     if (theme != null) {
-      if (theme == "dark") {
-        return ThemeMode.dark;
-      } else if (theme == "light") {
-        return ThemeMode.light;
-      } else {
-        return ThemeMode.system;
-      }
+      return theme;
     } else {
-      return ThemeMode.system;
+      return "Tema do sistema";
     }
   }
 }
