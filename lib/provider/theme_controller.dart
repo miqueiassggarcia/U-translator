@@ -3,38 +3,29 @@ import 'package:flutter/scheduler.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // import 'package:shared_preferences/shared_preferences.dart';
 
 class AppThemeProvider extends ChangeNotifier {
-  late bool _themeIsDark;
   ThemeMode themeOfSystem = ThemeMode.system;
 
   AppThemeProvider() {
-    _themeIsDark = false;
-    getPreferences();
+    getThemePreferences();
   }
 
-  getPreferences() async {
-    bool? theme = await ThemePreferences().getTheme();
-    if (theme != null) {
-      _themeIsDark = theme;
-    } else if (SchedulerBinding
-            .instance.platformDispatcher.platformBrightness ==
-        Brightness.dark) {
-      ThemePreferences().setTheme(true);
-      _themeIsDark = true;
-    } else {
-      ThemePreferences().setTheme(false);
-      _themeIsDark = false;
-    }
-    notifyListeners();
+  getThemePreferences() async {
+    themeOfSystem = await ThemePreferences().getTheme();
   }
 
   bool get isDarkMode {
-    return _themeIsDark;
+    return themeOfSystem == ThemeMode.dark;
   }
 
-  void toggleTheme(bool isOn) {
-    _themeIsDark = isOn ? true : false;
-
-    ThemePreferences().setTheme(isOn);
+  void toggleTheme(String theme) {
+    if (theme == "dark") {
+      themeOfSystem = ThemeMode.dark;
+    } else if (theme == "light") {
+      themeOfSystem = ThemeMode.light;
+    } else {
+      themeOfSystem = ThemeMode.system;
+    }
+    ThemePreferences().setTheme(theme);
     notifyListeners();
   }
 }
@@ -42,15 +33,25 @@ class AppThemeProvider extends ChangeNotifier {
 class ThemePreferences {
   static const key = "themePreferences";
 
-  setTheme(bool value) async {
+  void setTheme(String value) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setBool(key, value);
+    sharedPreferences.setString(key, value);
   }
 
-  getTheme() async {
+  Future<ThemeMode> getTheme() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    bool? theme = sharedPreferences.getBool(key);
+    String? theme = sharedPreferences.getString(key);
 
-    return theme;
+    if (theme != null) {
+      if (theme == "dark") {
+        return ThemeMode.dark;
+      } else if (theme == "light") {
+        return ThemeMode.light;
+      } else {
+        return ThemeMode.system;
+      }
+    } else {
+      return ThemeMode.system;
+    }
   }
 }

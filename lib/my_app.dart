@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
-            themeMode: themeController.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+            themeMode: themeController.themeOfSystem,
             home: const InitialPage(),
           );
         },
