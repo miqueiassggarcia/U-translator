@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:utranslator/builders/build_inicial_home_text.dart';
 import 'package:utranslator/builders/build_pdf_history.dart';
 import 'package:utranslator/builders/build_pdf_viewer.dart';
+import 'package:utranslator/pages/home_page_body.dart';
 
 class HomePageBodyController extends ChangeNotifier {
   bool buttonIsActive = true;
@@ -31,6 +32,7 @@ class HomePageBodyController extends ChangeNotifier {
   }
 
   changeBodyToPdfView(String pdfPath) {
+    print(pdfPath);
     currentBody = PDFViewerBody(pdfPath: pdfPath);
     buttonIsActive = false;
     setIfThePDFHasAlreadyBeenOpen(true);
