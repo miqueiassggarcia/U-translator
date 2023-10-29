@@ -48,7 +48,7 @@ class _ConfigPageState extends State<ConfigPage> {
                       alignment: Alignment.centerLeft,
                       child: SizedBox(
                           height: height! / 10,
-                          width: width! / 2,
+                          width: width! / 2.2,
                           child: Center(
                               child: Text("Tema padrão",
                                   style: TextStyle(fontSize: 24))))),
@@ -56,7 +56,7 @@ class _ConfigPageState extends State<ConfigPage> {
                       alignment: Alignment.centerLeft,
                       child: SizedBox(
                           height: height! / 10,
-                          width: width! / 2,
+                          width: width! / 2.1,
                           child: Center(
                               child: DropdownButton<String>(
                                   value: selectedItem,
@@ -114,15 +114,7 @@ class _ConfigPageState extends State<ConfigPage> {
                       alignment: Alignment.centerLeft,
                       child: SizedBox(
                           height: height! / 10,
-                          width: width! / 2,
-                          child: Center(
-                              child: Text("Entrada",
-                                  style: TextStyle(fontSize: 24))))),
-                  Align(
-                      alignment: Alignment.centerLeft,
-                      child: SizedBox(
-                          height: height! / 10,
-                          width: width! / 2,
+                          width: width! / 2.2,
                           child: Center(
                               child: DropdownButton<String>(
                                   value: selectedInputLanguage,
@@ -135,25 +127,12 @@ class _ConfigPageState extends State<ConfigPage> {
                                       .toList(),
                                   onChanged: (item) => setState(
                                       () => selectedInputLanguage = item))))),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
+                  const Icon(Icons.arrow_forward),
                   Align(
                       alignment: Alignment.centerLeft,
                       child: SizedBox(
                           height: height! / 10,
-                          width: width! / 2,
-                          child: Center(
-                              child: Text("Saída",
-                                  style: TextStyle(fontSize: 24))))),
-                  Align(
-                      alignment: Alignment.centerLeft,
-                      child: SizedBox(
-                          height: height! / 10,
-                          width: width! / 2,
+                          width: width! / 2.2,
                           child: Center(
                               child: DropdownButton<String>(
                                   value: selectedOutputLanguage,
