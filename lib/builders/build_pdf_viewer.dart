@@ -1,10 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:utranslator/context/darkmode.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:invert_colors/invert_colors.dart';
+import 'package:utranslator/provider/theme_controller.dart';
 
 class PDFViewerBody extends StatelessWidget {
   final String? pdfPath;
@@ -31,12 +32,14 @@ class PDFViewerBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<AppThemeProvider>(context);
+
     if (pdfPath != null) {
       PDFHistory.addToHistory(pdfPath!);
       _file = File(pdfPath!);
     }
 
-    return context.isDarkMode
+    return themeProvider.isDarkMode
         ? InvertColors(
             child: SfPdfViewer.file(
             _file!,

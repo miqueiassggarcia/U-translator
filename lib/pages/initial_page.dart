@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:utranslator/navigation/navigation.dart';
 import 'package:utranslator/builders/build_initial_text.dart';
 import 'package:utranslator/pages/home_page_body.dart';
+import 'package:utranslator/provider/theme_controller.dart';
 
 class InitialPage extends StatefulWidget {
   const InitialPage({super.key});
@@ -12,6 +13,15 @@ class InitialPage extends StatefulWidget {
 
 class _InitialPageState extends State<InitialPage> {
   final pageViewController = PageController();
+  final appThemeProvider = AppThemeProvider();
+
+  @override
+  void initState() {
+    super.initState();
+    appThemeProvider.addListener(() {
+      setState(() {});
+    });
+  }
 
   @override
   void dispose() {
