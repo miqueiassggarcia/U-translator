@@ -54,6 +54,7 @@ dependencies:
   receive_intent: ^0.2.4
   lecle_flutter_absolute_path: ^0.0.2+1
   provider: ^6.0.5
+  flutter_dotenv: ^5.1.0
 
 
 dev_dependencies:
@@ -96,6 +97,7 @@ flutter_launcher_icons:
 flutter:
   assets:
     - assets/images/Logo.png
+    - .env
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

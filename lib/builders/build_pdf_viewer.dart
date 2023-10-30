@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:invert_colors/invert_colors.dart';
 import 'package:utranslator/provider/theme_controller.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class PDFViewerBody extends StatelessWidget {
   final String? pdfPath;
@@ -21,9 +22,16 @@ class PDFViewerBody extends StatelessWidget {
         builder: (context) => Positioned(
               top: details.globalSelectedRegion!.center.dy - 55,
               left: details.globalSelectedRegion!.bottomLeft.dx,
-              child: ElevatedButton(
-                onPressed: () {},
-                child: null,
+              child: Row(
+                children: [
+                  ElevatedButton(
+                    child: Text("Traduzir"),
+                    onPressed: () {
+                      String? apikey = dotenv.env['APIKEY'];
+                      print(details.selectedText);
+                    },
+                  )
+                ]
               ),
             ));
 
