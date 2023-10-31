@@ -8,12 +8,14 @@ import 'package:invert_colors/invert_colors.dart';
 import 'package:utranslator/provider/theme_controller.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_cloud_translation/google_cloud_translation.dart';
+import 'package:utranslator/pages/initial_page.dart';
 
 
 class PDFViewerBody extends StatefulWidget {
   final String? pdfPath;
+  final Function callbackFunction;
 
-  const PDFViewerBody({super.key, this.pdfPath});
+  const PDFViewerBody({super.key, this.pdfPath, required this.callbackFunction});
 
   @override
   State<PDFViewerBody> createState() => _PDFViewerBodyState(pdfPath: this.pdfPath);
@@ -25,8 +27,9 @@ class _PDFViewerBodyState extends State<PDFViewerBody> {
   TranslationModel _translated = TranslationModel(translatedText: '', detectedSourceLanguage: '');
   OverlayEntry? _overlayEntry;
   File? _file;
+  final Function callbackFunction;
 
-  _PDFViewerBodyState({required this.pdfPath});
+  _PDFViewerBodyState({required this.pdfPath, required this.callbackFunction});
 
   @override
   void initState() {
@@ -70,30 +73,64 @@ class _PDFViewerBodyState extends State<PDFViewerBody> {
 
     return themeProvider.isDarkMode
         ? InvertColors(
-            child: SfPdfViewer.file(
-            _file!,
-            onTextSelectionChanged: (PdfTextSelectionChangedDetails details) {
-              if (details.selectedText == null && _overlayEntry != null) {
-                _overlayEntry!.remove();
-                _overlayEntry = null;
-              } else if (details.selectedText != null &&
-                  _overlayEntry == null) {
-                _showContextMenu(context, details);
-              }
-            },
-          ))
-        : SfPdfViewer.file(
-            _file!,
-            onTextSelectionChanged: (PdfTextSelectionChangedDetails details) {
-              if (details.selectedText == null && _overlayEntry != null) {
-                _overlayEntry!.remove();
-                _overlayEntry = null;
-              } else if (details.selectedText != null &&
-                  _overlayEntry == null) {
-                _showContextMenu(context, details);
-              }
-            },
-          );
+            child: Stack(children: <Widget>[
+            SfPdfViewer.file(
+              _file!,
+              onTextSelectionChanged: (PdfTextSelectionChangedDetails details) {
+                if (details.selectedText == null && _overlayEntry != null) {
+                  _overlayEntry!.remove();
+                  _overlayEntry = null;
+                } else if (details.selectedText != null &&
+                    _overlayEntry == null) {
+                  _showContextMenu(context, details);
+                }
+              },
+            ),
+            Positioned(
+              top: 0.0,
+              left: 0.0,
+              child: IconButton(
+                icon: Icon(Icons.arrow_back_ios,
+                    color: Color.fromARGB(255, 0, 0, 0)),
+                onPressed: () {
+                  Navigator.pop(context);
+                  callbackFunction("");
+
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const InitialPage()));
+                },
+              ),
+            ),
+          ]))
+        : Stack(children: <Widget>[
+            SfPdfViewer.file(
+              _file!,
+              onTextSelectionChanged: (PdfTextSelectionChangedDetails details) {
+                if (details.selectedText == null && _overlayEntry != null) {
+                  _overlayEntry!.remove();
+                  _overlayEntry = null;
+                } else if (details.selectedText != null &&
+                    _overlayEntry == null) {
+                  _showContextMenu(context, details);
+                }
+              },
+            ),
+            Positioned(
+              top: 0.0,
+              left: 0.0,
+              child: IconButton(
+                icon: Icon(Icons.arrow_back_ios,
+                    color: Color.fromARGB(255, 0, 0, 0)),
+                onPressed: () {
+                  Navigator.pop(context);
+                  callbackFunction("");
+
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const InitialPage()));
+                },
+              ),
+            ),
+          ]);
     //return PDFView(
     //  filePath: pdfPath,
     //);
