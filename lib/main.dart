@@ -9,8 +9,10 @@ import 'package:utranslator/builders/build_pdf_viewer.dart';
 import 'package:lecle_flutter_absolute_path/lecle_flutter_absolute_path.dart';
 import 'package:utranslator/builders/build_pdf_history.dart';
 import 'package:utranslator/pages/home_page_body.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async{
+  await dotenv.load(fileName: ".env");
   runApp(const MyApp());
   final receivedIntent = await ReceiveIntent.getInitialIntent();
   if (receivedIntent != null){

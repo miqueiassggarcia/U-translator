@@ -6,16 +6,38 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:invert_colors/invert_colors.dart';
 import 'package:utranslator/provider/theme_controller.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:google_cloud_translation/google_cloud_translation.dart';
 import 'package:utranslator/pages/initial_page.dart';
 
-class PDFViewerBody extends StatelessWidget {
+
+class PDFViewerBody extends StatefulWidget {
   final String? pdfPath;
+  final Function callbackFunction;
+
+  const PDFViewerBody({super.key, this.pdfPath, required this.callbackFunction});
+
+  @override
+  State<PDFViewerBody> createState() => _PDFViewerBodyState(pdfPath: this.pdfPath, callbackFunction: this.callbackFunction);
+}
+
+class _PDFViewerBodyState extends State<PDFViewerBody> {
+  final String? pdfPath;
+  Translation? _translation;
+  TranslationModel _translated = TranslationModel(translatedText: '', detectedSourceLanguage: '');
   OverlayEntry? _overlayEntry;
   File? _file;
   final Function callbackFunction;
 
-  PDFViewerBody({Key? key, this.pdfPath, required this.callbackFunction})
-      : super(key: key);
+  _PDFViewerBodyState({required this.pdfPath, required this.callbackFunction});
+
+  @override
+  void initState() {
+    print("iniciou");
+    String ak = dotenv.env['APIKEY'] as String;
+    _translation = Translation(apiKey: ak);
+    super.initState();
+  }
 
   void _showContextMenu(
       BuildContext context, PdfTextSelectionChangedDetails details) {
@@ -24,9 +46,16 @@ class PDFViewerBody extends StatelessWidget {
         builder: (context) => Positioned(
               top: details.globalSelectedRegion!.center.dy - 55,
               left: details.globalSelectedRegion!.bottomLeft.dx,
-              child: ElevatedButton(
-                onPressed: () {},
-                child: null,
+              child: Row(
+                children: [
+                  ElevatedButton(
+                    child: Text("Traduzir"),
+                    onPressed: () async {
+                      _translated = (await _translation?.translate(text: details.selectedText as String, to: 'en'))!;
+                      print(_translated.translatedText);
+                    },
+                  )
+                ]
               ),
             ));
 
