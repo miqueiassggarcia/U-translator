@@ -20,6 +20,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     controller.changeIfThePDFHasAlreadyBeenOpen(callbackPdfView);
+    controller.changeIfPDFOpen();
     controller.addListener(() {
       setState(() {});
     });

@@ -6,13 +6,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:invert_colors/invert_colors.dart';
 import 'package:utranslator/provider/theme_controller.dart';
+import 'package:utranslator/pages/initial_page.dart';
 
 class PDFViewerBody extends StatelessWidget {
   final String? pdfPath;
   OverlayEntry? _overlayEntry;
   File? _file;
+  final Function callbackFunction;
 
-  PDFViewerBody({Key? key, this.pdfPath}) : super(key: key);
+  PDFViewerBody({Key? key, this.pdfPath, required this.callbackFunction})
+      : super(key: key);
 
   void _showContextMenu(
       BuildContext context, PdfTextSelectionChangedDetails details) {
@@ -41,30 +44,64 @@ class PDFViewerBody extends StatelessWidget {
 
     return themeProvider.isDarkMode
         ? InvertColors(
-            child: SfPdfViewer.file(
-            _file!,
-            onTextSelectionChanged: (PdfTextSelectionChangedDetails details) {
-              if (details.selectedText == null && _overlayEntry != null) {
-                _overlayEntry!.remove();
-                _overlayEntry = null;
-              } else if (details.selectedText != null &&
-                  _overlayEntry == null) {
-                _showContextMenu(context, details);
-              }
-            },
-          ))
-        : SfPdfViewer.file(
-            _file!,
-            onTextSelectionChanged: (PdfTextSelectionChangedDetails details) {
-              if (details.selectedText == null && _overlayEntry != null) {
-                _overlayEntry!.remove();
-                _overlayEntry = null;
-              } else if (details.selectedText != null &&
-                  _overlayEntry == null) {
-                _showContextMenu(context, details);
-              }
-            },
-          );
+            child: Stack(children: <Widget>[
+            SfPdfViewer.file(
+              _file!,
+              onTextSelectionChanged: (PdfTextSelectionChangedDetails details) {
+                if (details.selectedText == null && _overlayEntry != null) {
+                  _overlayEntry!.remove();
+                  _overlayEntry = null;
+                } else if (details.selectedText != null &&
+                    _overlayEntry == null) {
+                  _showContextMenu(context, details);
+                }
+              },
+            ),
+            Positioned(
+              top: 0.0,
+              left: 0.0,
+              child: IconButton(
+                icon: Icon(Icons.arrow_back_ios,
+                    color: Color.fromARGB(255, 0, 0, 0)),
+                onPressed: () {
+                  Navigator.pop(context);
+                  callbackFunction("");
+
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const InitialPage()));
+                },
+              ),
+            ),
+          ]))
+        : Stack(children: <Widget>[
+            SfPdfViewer.file(
+              _file!,
+              onTextSelectionChanged: (PdfTextSelectionChangedDetails details) {
+                if (details.selectedText == null && _overlayEntry != null) {
+                  _overlayEntry!.remove();
+                  _overlayEntry = null;
+                } else if (details.selectedText != null &&
+                    _overlayEntry == null) {
+                  _showContextMenu(context, details);
+                }
+              },
+            ),
+            Positioned(
+              top: 0.0,
+              left: 0.0,
+              child: IconButton(
+                icon: Icon(Icons.arrow_back_ios,
+                    color: Color.fromARGB(255, 0, 0, 0)),
+                onPressed: () {
+                  Navigator.pop(context);
+                  callbackFunction("");
+
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const InitialPage()));
+                },
+              ),
+            ),
+          ]);
     //return PDFView(
     //  filePath: pdfPath,
     //);
