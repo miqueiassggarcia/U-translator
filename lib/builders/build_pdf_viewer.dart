@@ -7,13 +7,34 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:invert_colors/invert_colors.dart';
 import 'package:utranslator/provider/theme_controller.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:google_cloud_translation/google_cloud_translation.dart';
 
-class PDFViewerBody extends StatelessWidget {
+
+class PDFViewerBody extends StatefulWidget {
   final String? pdfPath;
+
+  const PDFViewerBody({super.key, this.pdfPath});
+
+  @override
+  State<PDFViewerBody> createState() => _PDFViewerBodyState(pdfPath: this.pdfPath);
+}
+
+class _PDFViewerBodyState extends State<PDFViewerBody> {
+  final String? pdfPath;
+  Translation? _translation;
+  TranslationModel _translated = TranslationModel(translatedText: '', detectedSourceLanguage: '');
   OverlayEntry? _overlayEntry;
   File? _file;
 
-  PDFViewerBody({Key? key, this.pdfPath}) : super(key: key);
+  _PDFViewerBodyState({required this.pdfPath});
+
+  @override
+  void initState() {
+    print("iniciou");
+    String ak = dotenv.env['APIKEY'] as String;
+    _translation = Translation(apiKey: ak);
+    super.initState();
+  }
 
   void _showContextMenu(
       BuildContext context, PdfTextSelectionChangedDetails details) {
@@ -26,9 +47,9 @@ class PDFViewerBody extends StatelessWidget {
                 children: [
                   ElevatedButton(
                     child: Text("Traduzir"),
-                    onPressed: () {
-                      String? apikey = dotenv.env['APIKEY'];
-                      print(details.selectedText);
+                    onPressed: () async {
+                      _translated = (await _translation?.translate(text: details.selectedText as String, to: 'en'))!;
+                      print(_translated.translatedText);
                     },
                   )
                 ]

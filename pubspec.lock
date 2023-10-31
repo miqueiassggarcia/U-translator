@@ -224,6 +224,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  google_cloud_translation:
+    dependency: "direct main"
+    description:
+      name: google_cloud_translation
+      sha256: "13944a6832231fe3b750f7f22aa890daf4c2d3b014528fbb38cc0037d406e22f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   html:
     dependency: transitive
     description:
@@ -232,14 +240,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.15.4"
+  html_unescape:
+    dependency: transitive
+    description:
+      name: html_unescape
+      sha256: "15362d7a18f19d7b742ef8dcb811f5fd2a2df98db9f80ea393c075189e0b61e3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   http:
     dependency: transitive
     description:
       name: http
-      sha256: "759d1a329847dd0f39226c688d3e06a6b8679668e350e2891a6474f8b4bb8525"
+      sha256: "5895291c13fa8a3bd82e76d5627f69e0d85ca6a30dcac95c4ea19a5d555879c2"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.0"
+    version: "0.13.6"
   http_parser:
     dependency: transitive
     description:
@@ -569,66 +585,58 @@ packages:
     dependency: transitive
     description:
       name: syncfusion_flutter_core
-      sha256: aea119c8117953fa5decf4a313b431e556b0959cd35ff88f8fbdc0eda9bedb06
+      sha256: "3979f0b1c5a97422cadae52d476c21fa3e0fb671ef51de6cae1d646d8b99fe1f"
       url: "https://pub.dev"
     source: hosted
-    version: "23.1.36"
+    version: "20.4.54"
   syncfusion_flutter_pdf:
     dependency: transitive
     description:
       name: syncfusion_flutter_pdf
-      sha256: "76a50a1d580714c078e2827adbd8b00d5f5c606879d07c44c5d99f0e864edda1"
+      sha256: cebcafc60d52d52e0789c18b6332c2bd378f0a6cca006fe0373293bcc6a66e6d
       url: "https://pub.dev"
     source: hosted
-    version: "23.1.36"
+    version: "20.4.54"
   syncfusion_flutter_pdfviewer:
     dependency: "direct main"
     description:
       name: syncfusion_flutter_pdfviewer
-      sha256: e5eaabd0a31fff16caead0d6d66d4c9946de7e46c89da7736de23cd4b2e6f676
+      sha256: "797a704efd843a606150d3d6317d5f2191173c334a5e5056b7f37855a8093af3"
       url: "https://pub.dev"
     source: hosted
-    version: "23.1.36"
-  syncfusion_flutter_signaturepad:
-    dependency: transitive
-    description:
-      name: syncfusion_flutter_signaturepad
-      sha256: ea6b218d127e0315b3309ee072a1d304c76aa7c497a196b3474f9c6b38c01f82
-      url: "https://pub.dev"
-    source: hosted
-    version: "23.1.36"
+    version: "20.4.54"
   syncfusion_pdfviewer_macos:
     dependency: transitive
     description:
       name: syncfusion_pdfviewer_macos
-      sha256: "6f928bee1f786b8d1939d3c4142c5cc2de2c13d19262d302878935a2bc33850c"
+      sha256: "6f2a9cdfc80aff8a13caba8d36527b3d68f5cb3530a7f2b29d269fbcff745afd"
       url: "https://pub.dev"
     source: hosted
-    version: "23.1.36"
+    version: "20.4.54"
   syncfusion_pdfviewer_platform_interface:
     dependency: transitive
     description:
       name: syncfusion_pdfviewer_platform_interface
-      sha256: "0251864fb82e2bd92a1b17e8562fe342e78cd530e26b0d2f54e94a441ccb4584"
+      sha256: "646230861e103d33173a4909a184a00b2aa5a01819d38b05ccbf99da51be9314"
       url: "https://pub.dev"
     source: hosted
-    version: "23.1.36"
+    version: "20.4.54"
   syncfusion_pdfviewer_web:
     dependency: transitive
     description:
       name: syncfusion_pdfviewer_web
-      sha256: eb224f52e86326dbf08ea12978c3db0b4e376866a84d4fcb131fc06ec93cbe20
+      sha256: ba0b72766f445ae171a5363df20abd50be0c1bc4576044df6afba3377a419de1
       url: "https://pub.dev"
     source: hosted
-    version: "23.1.36"
+    version: "20.4.54"
   syncfusion_pdfviewer_windows:
     dependency: transitive
     description:
       name: syncfusion_pdfviewer_windows
-      sha256: aca74797a97512f4d3ca2be0ed49193fae7e5fd29a9b1b1139429d39c9216bf9
+      sha256: "4cc6c92c211636550c4beb998f2db8f76d4f20eccbc8160730f2add0c8e23411"
       url: "https://pub.dev"
     source: hosted
-    version: "23.1.36"
+    version: "20.4.54"
   synchronized:
     dependency: transitive
     description:
