@@ -18,7 +18,7 @@ class PDFViewerBody extends StatefulWidget {
   const PDFViewerBody({super.key, this.pdfPath, required this.callbackFunction});
 
   @override
-  State<PDFViewerBody> createState() => _PDFViewerBodyState(pdfPath: this.pdfPath);
+  State<PDFViewerBody> createState() => _PDFViewerBodyState(pdfPath: this.pdfPath, callbackFunction: this.callbackFunction);
 }
 
 class _PDFViewerBodyState extends State<PDFViewerBody> {
