@@ -14,11 +14,13 @@ class MyApp extends StatelessWidget {
         builder: (context, _) {
           final themeController = Provider.of<AppThemeProvider>(context);
           
-          return MaterialApp(
+          return SafeArea(
+            child: MaterialApp(
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
             themeMode: themeController.themeMode,
             home: const InitialPage(),
+          ),
           );
         },
       );
