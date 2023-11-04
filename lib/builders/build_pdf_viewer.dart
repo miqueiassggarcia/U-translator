@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:invert_colors/invert_colors.dart';
+import 'package:utranslator/controllers/home_page_body_controller.dart';
 import 'package:utranslator/controllers/initial_page_controller.dart';
 import 'package:utranslator/provider/theme_controller.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -15,13 +16,19 @@ import 'package:utranslator/pages/initial_page.dart';
 class PDFViewerBody extends StatefulWidget {
   final String? pdfPath;
   final Function callbackFunction;
+  final int currentPage;
 
   const PDFViewerBody(
-      {super.key, this.pdfPath, required this.callbackFunction});
+      {super.key,
+      this.pdfPath,
+      required this.callbackFunction,
+      required this.currentPage});
 
   @override
   State<PDFViewerBody> createState() => _PDFViewerBodyState(
-      pdfPath: this.pdfPath, callbackFunction: this.callbackFunction);
+      pdfPath: this.pdfPath,
+      callbackFunction: this.callbackFunction,
+      currentPage: this.currentPage);
 }
 
 class _PDFViewerBodyState extends State<PDFViewerBody> {
@@ -33,14 +40,20 @@ class _PDFViewerBodyState extends State<PDFViewerBody> {
   File? _file;
   final Function callbackFunction;
   late PdfViewerController _pdfViewerController;
+  final int currentPage;
+  final homePageBodyController = HomePageBodyController();
 
-  _PDFViewerBodyState({required this.pdfPath, required this.callbackFunction});
+  _PDFViewerBodyState(
+      {required this.pdfPath,
+      required this.callbackFunction,
+      required this.currentPage});
 
   @override
   void initState() {
     super.initState();
 
     _pdfViewerController = PdfViewerController();
+    _pdfViewerController.jumpToPage(currentPage);
 
     print("iniciou");
     String ak = dotenv.env['APIKEY'] as String;
@@ -83,6 +96,7 @@ class _PDFViewerBodyState extends State<PDFViewerBody> {
       return Stack(children: <Widget>[
         SfPdfViewer.file(
           _file!,
+          controller: _pdfViewerController,
           onTextSelectionChanged: (PdfTextSelectionChangedDetails details) {
             if (details.selectedText == null && _overlayEntry != null) {
               _overlayEntry!.remove();
@@ -90,6 +104,9 @@ class _PDFViewerBodyState extends State<PDFViewerBody> {
             } else if (details.selectedText != null && _overlayEntry == null) {
               _showContextMenu(context, details);
             }
+          },
+          onPageChanged: (PdfPageChangedDetails details) {
+            homePageBodyController.setPDFOpen(pdfPath!, details.newPageNumber);
           },
         ),
         Positioned(
@@ -104,7 +121,7 @@ class _PDFViewerBodyState extends State<PDFViewerBody> {
               });
 
               Navigator.pop(context);
-              callbackFunction("");
+              callbackFunction("", 0);
 
               Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => const InitialPage()));

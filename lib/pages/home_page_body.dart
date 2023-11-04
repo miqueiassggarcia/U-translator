@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
 
   void callbackPdfView(String pdfPath) {
     setState(() {
-      controller.changeBodyToPdfView(pdfPath);
+      controller.changeBodyToPdfView(pdfPath, 0);
     });
   }
 
