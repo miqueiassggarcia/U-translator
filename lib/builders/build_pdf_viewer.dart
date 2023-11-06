@@ -55,7 +55,6 @@ class _PDFViewerBodyState extends State<PDFViewerBody> {
     _pdfViewerController = PdfViewerController();
     _pdfViewerController.jumpToPage(currentPage);
 
-    print("iniciou");
     String ak = dotenv.env['APIKEY'] as String;
     _translation = Translation(apiKey: ak);
   }
@@ -67,19 +66,15 @@ class _PDFViewerBodyState extends State<PDFViewerBody> {
         builder: (context) => Positioned(
               top: details.globalSelectedRegion!.center.dy - 55,
               left: details.globalSelectedRegion!.bottomLeft.dx,
-              child: Row(children: [
-                ElevatedButton(
-                  child: Text("Traduzir"),
-                  onPressed: () async {
-                    _translated = (await _translation?.translate(
-                        text: details.selectedText as String, to: 'en'))!;
-                    print(_translated.translatedText);
-                  },
-                )
-              ]),
+              child: OverlayTrasnlation(text_selected: details.selectedText as String ,translateText: translateText)
             ));
 
     _overlayState.insert(_overlayEntry!);
+  }
+
+  Future<String> translateText(String text) async {
+    _translated = (await _translation?.translate(text: text, to: 'en'))!;
+    return _translated.translatedText; 
   }
 
   @override
@@ -164,6 +159,81 @@ class _PDFViewerBodyState extends State<PDFViewerBody> {
     return themeProvider.isDarkMode
         ? InvertColors(child: PDFBodyGenerator())
         : PDFBodyGenerator();
+  }
+}
+
+
+class OverlayTrasnlation extends StatefulWidget {
+  final String text_selected;
+  final Function translateText;
+
+
+  OverlayTrasnlation({
+    required this.text_selected,
+    required this.translateText
+  });
+
+  @override
+  State<OverlayTrasnlation> createState() => _OverlayTrasnlationState(
+    text_selected: this.text_selected, 
+    translateText: this.translateText
+  );
+}
+
+class _OverlayTrasnlationState extends State<OverlayTrasnlation> {
+  String text_selected;
+  Function translateText;
+  bool showBox = false;
+  bool canSave = false;
+  bool translated = false;
+  late String _text_translated = "Traduzindo...";
+
+  _OverlayTrasnlationState({required this.text_selected, required this.translateText});
+
+  Future<void> _troggle_pressed() async {
+    setState(() {
+      showBox = true;
+    });
+    if (text_selected.length < 200) {
+      String t = await translateText(text_selected);
+      setState(() {
+        _text_translated = t;
+        canSave = true;
+        translated = true;
+      });
+    } else {
+      setState(() {
+        _text_translated = "Texto muito longo";
+        canSave = false;
+      });
+    }
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            ElevatedButton(
+              child: Text("Traduzir"),
+              onPressed: !translated ? _troggle_pressed : null
+            )
+          ],
+        ),
+        showBox == true ? Container (
+          width: 300,
+          padding: EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            color: const Color.fromARGB(255, 88, 81, 81)
+          ),
+          child: Text(_text_translated, 
+            style: TextStyle(color: Colors.white, fontSize: 15, decoration: TextDecoration.none),),
+        ) : Container()
+      ],
+    );
   }
 }
 
