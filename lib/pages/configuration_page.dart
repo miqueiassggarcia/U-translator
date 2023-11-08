@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:utranslator/controllers/configuration_controller.dart';
 import 'package:utranslator/provider/theme_controller.dart';
 import 'package:utranslator/navigation/navigation.dart';
 
@@ -13,19 +14,31 @@ class ConfigPage extends StatefulWidget {
 class _ConfigPageState extends State<ConfigPage> {
   double? height;
   double? width;
+  ConfigurationController controller = ConfigurationController();
+
+  @override
+  void initState() {
+    super.initState();
+    controller.changeIfLanguageSelected();
+    controller.addListener(() {
+      setState(() {});
+    });
+  }
 
   List<String> themeItems = ["Tema do sistema", "Darkmode", "Lightmode"];
 
   List<String> languageItems = ["Português", "Inglês", "Espanhol", "Frânces"];
-  String? selectedInputLanguage = "Inglês";
-  String? selectedOutputLanguage = "Português";
 
   @override
   Widget build(BuildContext context) {
+    String? selectedInputLanguage = controller.inputLanguage;
+    String? selectedOutputLanguage = controller.outputLanguage;
+
     final themeProvider = Provider.of<AppThemeProvider>(context);
+    String? selectedItem = themeProvider.currentTheme;
+    
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
-    String? selectedItem = themeProvider.currentTheme;
 
     return Scaffold(
         drawer: const Navigation(),
@@ -126,7 +139,7 @@ class _ConfigPageState extends State<ConfigPage> {
                                           ))
                                       .toList(),
                                   onChanged: (item) => setState(
-                                      () => selectedInputLanguage = item))))),
+                                      () => controller.changeInputLanguage(item!)))))),
                   const Icon(Icons.arrow_forward),
                   Align(
                       alignment: Alignment.centerLeft,
@@ -144,7 +157,7 @@ class _ConfigPageState extends State<ConfigPage> {
                                           ))
                                       .toList(),
                                   onChanged: (item) => setState(
-                                      () => selectedOutputLanguage = item))))),
+                                      () => controller.changeOutputLanguage(item!)))))),
                 ],
               ),
             ]));
