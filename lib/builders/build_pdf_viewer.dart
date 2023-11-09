@@ -12,6 +12,7 @@ import 'package:utranslator/provider/theme_controller.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_cloud_translation/google_cloud_translation.dart';
 import 'package:utranslator/pages/initial_page.dart';
+import 'package:utranslator/controllers/configuration_controller.dart';
 
 class PDFViewerBody extends StatefulWidget {
   final String? pdfPath;
@@ -64,7 +65,7 @@ class _PDFViewerBodyState extends State<PDFViewerBody> {
     final OverlayState _overlayState = Overlay.of(context);
     _overlayEntry = OverlayEntry(
         builder: (context) => Positioned(
-              top: details.globalSelectedRegion!.center.dy - 55,
+              top: details.globalSelectedRegion!.center.dy - 100,
               left: details.globalSelectedRegion!.bottomLeft.dx,
               child: OverlayTrasnlation(text_selected: details.selectedText as String ,translateText: translateText)
             ));
@@ -72,8 +73,8 @@ class _PDFViewerBodyState extends State<PDFViewerBody> {
     _overlayState.insert(_overlayEntry!);
   }
 
-  Future<String> translateText(String text) async {
-    _translated = (await _translation?.translate(text: text, to: 'en'))!;
+  Future<String> translateText(String text, String to_language) async {
+    _translated = (await _translation?.translate(text: text, to: to_language))!;
     return _translated.translatedText; 
   }
 
@@ -187,15 +188,25 @@ class _OverlayTrasnlationState extends State<OverlayTrasnlation> {
   bool canSave = false;
   bool translated = false;
   late String _text_translated = "Traduzindo...";
+  ConfigurationController controller = ConfigurationController();
 
   _OverlayTrasnlationState({required this.text_selected, required this.translateText});
+
+  @override
+  void initState() {
+    super.initState();
+    controller.changeIfLanguageSelected();
+    controller.addListener(() {
+      setState(() {});
+    });
+  }
 
   Future<void> _troggle_pressed() async {
     setState(() {
       showBox = true;
     });
     if (text_selected.length < 200) {
-      String t = await translateText(text_selected);
+      String t = await translateText(text_selected, controller.getCodeFromOutputLanguage);
       setState(() {
         _text_translated = t;
         canSave = true;
@@ -219,7 +230,10 @@ class _OverlayTrasnlationState extends State<OverlayTrasnlation> {
             ElevatedButton(
               child: Text("Traduzir"),
               onPressed: !translated ? _troggle_pressed : null
-            )
+            ),
+            translated ? ElevatedButton(onPressed: () { 
+
+            }, child: Text("Salvar")) : Container()
           ],
         ),
         showBox == true ? Container (

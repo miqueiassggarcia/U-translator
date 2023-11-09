@@ -5,8 +5,6 @@ class ConfigurationController extends ChangeNotifier {
   late String inputLanguage;
   late String outputLanguage;
 
-<<<<<<< HEAD
-=======
   Map<String, dynamic> languagesCodes = {
     "Africâner": "af",
     "Albanês": "sq",
@@ -152,7 +150,6 @@ class ConfigurationController extends ChangeNotifier {
     return languagesCodes[outputLanguage];
   }
 
->>>>>>> develop
   static const _keyInputLanguage = 'imput_language';
   static const _keyOutputLanguage = 'output_language';
 

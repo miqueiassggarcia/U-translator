@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:utranslator/provider/theme_controller.dart';
+import 'package:utranslator/controllers/configuration_controller.dart';
 import 'package:utranslator/navigation/navigation.dart';
 
 class ConfigPage extends StatefulWidget {
