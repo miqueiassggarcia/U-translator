@@ -278,3 +278,31 @@ class PDFHistory {
     return history;
   }
 }
+
+class PDFWords {
+  static const _Word = 'pdf_Words';
+
+  static Future<List<String>> getWords() async {
+    final prefs = await SharedPreferences.getInstance();
+    final words = prefs.getStringList(_Word) ?? [];
+    return words;
+  }
+
+  static Future<List<String>> addToWords(String pdfWords) async {
+    final prefs = await SharedPreferences.getInstance();
+    final words = prefs.getStringList(_Word) ?? [];
+
+    if (words.contains(pdfWords)) {
+      words.remove(pdfWords);
+    }
+
+    words.insert(0, pdfWords);
+
+    if (words.length > 20) {
+      words.removeLast();
+    }
+
+    await prefs.setStringList(_Word, words);
+    return words;
+  }
+}
