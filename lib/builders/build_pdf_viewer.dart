@@ -187,8 +187,9 @@ class _OverlayTrasnlationState extends State<OverlayTrasnlation> {
   bool showBox = false;
   bool canSave = false;
   bool translated = false;
-  late String _text_translated = "Traduzindo...";
+  String _text_translated = "Traduzindo...";
   ConfigurationController controller = ConfigurationController();
+  PDFWords _pdfWords = PDFWords();
 
   _OverlayTrasnlationState({required this.text_selected, required this.translateText});
 
@@ -201,7 +202,7 @@ class _OverlayTrasnlationState extends State<OverlayTrasnlation> {
     });
   }
 
-  Future<void> _troggle_pressed() async {
+  Future<void> _troggle_translate_pressed() async {
     setState(() {
       showBox = true;
     });
@@ -218,7 +219,10 @@ class _OverlayTrasnlationState extends State<OverlayTrasnlation> {
         canSave = false;
       });
     }
+  }
 
+  Future<void> _troggle_save_word_pressed() async {
+    PDFWords.addToWords(_text_translated);
   }
 
   @override
@@ -229,11 +233,9 @@ class _OverlayTrasnlationState extends State<OverlayTrasnlation> {
           children: [
             ElevatedButton(
               child: Text("Traduzir"),
-              onPressed: !translated ? _troggle_pressed : null
+              onPressed: !translated ? _troggle_translate_pressed : null
             ),
-            translated ? ElevatedButton(onPressed: () { 
-
-            }, child: Text("Salvar")) : Container()
+            translated ? ElevatedButton(onPressed: _troggle_save_word_pressed, child: Text("Salvar")) : Container()
           ],
         ),
         showBox == true ? Container (
