@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:utranslator/controllers/configuration_controller.dart';
 import 'package:utranslator/provider/theme_controller.dart';
 import 'package:utranslator/navigation/navigation.dart';
 
@@ -27,7 +26,142 @@ class _ConfigPageState extends State<ConfigPage> {
 
   List<String> themeItems = ["Tema do sistema", "Darkmode", "Lightmode"];
 
-  List<String> languageItems = ["Português", "Inglês", "Espanhol", "Frânces"];
+  List<String> languageItems = [
+    "Africâner",
+    "Albanês",
+    "Amárico",
+    "Árabe",
+    "Armênio",
+    "Assamês",
+    "Aymara",
+    "Azerbaijano",
+    "Bambara",
+    "Basco",
+    "Bielorrusso",
+    "Bengalês",
+    "Boiapuri",
+    "Bósnio",
+    "Búlgaro",
+    "Catalão",
+    "Cebuano",
+    "Chinês (simp)",
+    "Chinês (trad)",
+    "Córsico",
+    "Croata",
+    "Tcheco",
+    "Coreano",
+    "Divehi",
+    "Dogri",
+    "Holandês",
+    "Inglês",
+    "Esperanto",
+    "Estoniano",
+    "Ewe",
+    // "Filipino",
+    "Finlandês",
+    "Francês",
+    "Frísio",
+    "Galego",
+    "Georgiano",
+    "Alemão",
+    "Grego",
+    "Guarani",
+    "Gujarati",
+    "Haitiano",
+    "Hauçá",
+    "Havaiano",
+    "Hebraico",
+    "Hindi",
+    "Hmong",
+    "Húngaro",
+    "Islandês",
+    "Igbo",
+    "Ilocano",
+    "Indonésio",
+    "Irlandês",
+    "Italian",
+    "Japonês",
+    "Javanês",
+    "Canarês",
+    "Cazaque",
+    "Cmer",
+    "Quiniaruanda",
+    "Concani",
+    // "Coreano",
+    "Krio",
+    "Curdo",
+    "Curdo (Sorani)",
+    "Quirguiz",
+    "Laosiano",
+    "Latim",
+    "Letão",
+    "Lingala",
+    "Lituano",
+    "Luganda",
+    "Luxemburguês",
+    "Macedônio",
+    "Maithili",
+    "Malgaxe",
+    "Malaio",
+    "Malaiala",
+    "Maltês",
+    "Maori",
+    "Marata",
+    "Manipuri",
+    "Mizo",
+    "Mongol",
+    "Birmanês",
+    "Nepalês",
+    "Norueguês",
+    "Chichewa",
+    "Oriá",
+    "Oromo",
+    "Pashto",
+    "Persa",
+    "Polonês",
+    "Português",
+    "Punjabi",
+    "Quíchua",
+    "Romeno",
+    "Russo",
+    "Samoano",
+    "Sânscrito",
+    "Escocês",
+    "Sepedi",
+    "Sérvio",
+    "Sesoto",
+    "Xona",
+    "Sindi",
+    "Cingalês",
+    "Eslovaco",
+    "Esloveno",
+    "Somali",
+    "Espanhol",
+    "Sundanês",
+    "Suaíli",
+    "Sueco",
+    "Filipino",
+    "Tajique",
+    "Tâmil",
+    "Tártaro",
+    "Telugu",
+    "Tailandês",
+    "Tigrínia",
+    "Tsonga",
+    "Turco",
+    "Turcomano",
+    "Twi",
+    "Ucraniano",
+    "Urdu",
+    "Uyghur",
+    "Usbeque",
+    "Vietnamita",
+    "Galês",
+    "Xosa",
+    "Ídiche",
+    "Iorubá",
+    "Zulu"
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +170,7 @@ class _ConfigPageState extends State<ConfigPage> {
 
     final themeProvider = Provider.of<AppThemeProvider>(context);
     String? selectedItem = themeProvider.currentTheme;
-    
+
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
 
@@ -139,7 +273,7 @@ class _ConfigPageState extends State<ConfigPage> {
                                           ))
                                       .toList(),
                                   onChanged: (item) => setState(
-                                      () => controller.changeInputLanguage(item!)))))),
+                                      () => selectedInputLanguage = item))))),
                   const Icon(Icons.arrow_forward),
                   Align(
                       alignment: Alignment.centerLeft,
@@ -156,8 +290,8 @@ class _ConfigPageState extends State<ConfigPage> {
                                                 style: TextStyle(fontSize: 20)),
                                           ))
                                       .toList(),
-                                  onChanged: (item) => setState(
-                                      () => controller.changeOutputLanguage(item!)))))),
+                                  onChanged: (item) => setState(() => controller
+                                      .changeOutputLanguage(item!)))))),
                 ],
               ),
             ]));
