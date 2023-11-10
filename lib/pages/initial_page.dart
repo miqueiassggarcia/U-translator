@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:utranslator/controllers/initial_page_controller.dart';
+import 'package:utranslator/controllers/drawer_status_controller.dart';
 import 'package:utranslator/navigation/navigation.dart';
 import 'package:utranslator/builders/build_initial_text.dart';
 import 'package:utranslator/pages/home_page_body.dart';
@@ -48,6 +49,9 @@ class _InitialPageState extends State<InitialPage> {
                   )
                 : null,
             drawer: const Navigation(),
+            onDrawerChanged: (isOpened) {
+              DrawerStatusController.instance.changeDrawnerStatus(isOpened);
+            },
             bottomNavigationBar: initialPageController.headerAndFooterIsActive
                 ? AnimatedBuilder(
                     animation: pageViewController,

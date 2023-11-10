@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:invert_colors/invert_colors.dart';
+import 'package:utranslator/controllers/drawer_status_controller.dart';
 import 'package:utranslator/controllers/home_page_body_controller.dart';
 import 'package:utranslator/controllers/initial_page_controller.dart';
 import 'package:utranslator/provider/theme_controller.dart';
@@ -73,6 +74,13 @@ class _PDFViewerBodyState extends State<PDFViewerBody> {
     _overlayState.insert(_overlayEntry!);
   }
 
+  void _removeContextMenu() {
+    if (_overlayEntry != null) {
+      _overlayEntry!.remove();
+      _overlayEntry = null;
+    }
+  }
+
   Future<String> translateText(String text, String to_language) async {
     _translated = (await _translation?.translate(text: text, to: to_language))!;
     return _translated.translatedText; 
@@ -95,8 +103,7 @@ class _PDFViewerBodyState extends State<PDFViewerBody> {
           controller: _pdfViewerController,
           onTextSelectionChanged: (PdfTextSelectionChangedDetails details) {
             if (details.selectedText == null && _overlayEntry != null) {
-              _overlayEntry!.remove();
-              _overlayEntry = null;
+              _removeContextMenu();
             } else if (details.selectedText != null && _overlayEntry == null) {
               _showContextMenu(context, details);
             }
@@ -156,6 +163,18 @@ class _PDFViewerBodyState extends State<PDFViewerBody> {
         ),
       ]);
     }
+
+    return AnimatedBuilder(
+      animation: DrawerStatusController.instance,
+       builder: (context, child) {
+          if (DrawerStatusController.instance.drawnerOpened) {
+            _removeContextMenu();
+          }
+
+         return themeProvider.isDarkMode
+          ? InvertColors(child: PDFBodyGenerator())
+          : PDFBodyGenerator();
+       });
 
     return themeProvider.isDarkMode
         ? InvertColors(child: PDFBodyGenerator())
