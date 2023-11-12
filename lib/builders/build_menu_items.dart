@@ -14,7 +14,6 @@ Widget buildMenuItems(BuildContext context) => Container(
             onTap: () => Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (context) => const InitialPage())),
           ),
-          const Divider(color: Colors.black54),
           ListTile(
             leading: const Icon(Icons.settings),
             title: const Text('Configurações'),

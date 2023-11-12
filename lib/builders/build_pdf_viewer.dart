@@ -66,10 +66,11 @@ class _PDFViewerBodyState extends State<PDFViewerBody> {
     final OverlayState _overlayState = Overlay.of(context);
     _overlayEntry = OverlayEntry(
         builder: (context) => Positioned(
-              top: details.globalSelectedRegion!.center.dy - 100,
-              left: details.globalSelectedRegion!.bottomLeft.dx,
-              child: OverlayTrasnlation(text_selected: details.selectedText as String ,translateText: translateText)
-            ));
+            top: details.globalSelectedRegion!.center.dy - 100,
+            left: details.globalSelectedRegion!.bottomLeft.dx,
+            child: OverlayTrasnlation(
+                text_selected: details.selectedText as String,
+                translateText: translateText)));
 
     _overlayState.insert(_overlayEntry!);
   }
@@ -83,7 +84,7 @@ class _PDFViewerBodyState extends State<PDFViewerBody> {
 
   Future<String> translateText(String text, String to_language) async {
     _translated = (await _translation?.translate(text: text, to: to_language))!;
-    return _translated.translatedText; 
+    return _translated.translatedText;
   }
 
   @override
@@ -165,39 +166,29 @@ class _PDFViewerBodyState extends State<PDFViewerBody> {
     }
 
     return AnimatedBuilder(
-      animation: DrawerStatusController.instance,
-       builder: (context, child) {
+        animation: DrawerStatusController.instance,
+        builder: (context, child) {
           if (DrawerStatusController.instance.drawnerOpened) {
             _removeContextMenu();
           }
 
-         return themeProvider.isDarkMode
-          ? InvertColors(child: PDFBodyGenerator())
-          : PDFBodyGenerator();
-       });
-
-    return themeProvider.isDarkMode
-        ? InvertColors(child: PDFBodyGenerator())
-        : PDFBodyGenerator();
+          return themeProvider.isDarkMode
+              ? InvertColors(child: PDFBodyGenerator())
+              : PDFBodyGenerator();
+        });
   }
 }
-
 
 class OverlayTrasnlation extends StatefulWidget {
   final String text_selected;
   final Function translateText;
 
-
-  OverlayTrasnlation({
-    required this.text_selected,
-    required this.translateText
-  });
+  OverlayTrasnlation(
+      {required this.text_selected, required this.translateText});
 
   @override
   State<OverlayTrasnlation> createState() => _OverlayTrasnlationState(
-    text_selected: this.text_selected, 
-    translateText: this.translateText
-  );
+      text_selected: this.text_selected, translateText: this.translateText);
 }
 
 class _OverlayTrasnlationState extends State<OverlayTrasnlation> {
@@ -210,7 +201,8 @@ class _OverlayTrasnlationState extends State<OverlayTrasnlation> {
   ConfigurationController controller = ConfigurationController();
   PDFWords _pdfWords = PDFWords();
 
-  _OverlayTrasnlationState({required this.text_selected, required this.translateText});
+  _OverlayTrasnlationState(
+      {required this.text_selected, required this.translateText});
 
   @override
   void initState() {
@@ -226,7 +218,8 @@ class _OverlayTrasnlationState extends State<OverlayTrasnlation> {
       showBox = true;
     });
     if (text_selected.length < 200) {
-      String t = await translateText(text_selected, controller.getCodeFromOutputLanguage);
+      String t = await translateText(
+          text_selected, controller.getCodeFromOutputLanguage);
       setState(() {
         _text_translated = t;
         canSave = true;
@@ -251,22 +244,31 @@ class _OverlayTrasnlationState extends State<OverlayTrasnlation> {
         Row(
           children: [
             ElevatedButton(
-              child: Text("Traduzir"),
-              onPressed: !translated ? _troggle_translate_pressed : null
-            ),
-            translated ? ElevatedButton(onPressed: _troggle_save_word_pressed, child: Text("Salvar")) : Container()
+                child: Text("Traduzir"),
+                onPressed: !translated ? _troggle_translate_pressed : null),
+            translated
+                ? ElevatedButton(
+                    onPressed: _troggle_save_word_pressed,
+                    child: Text("Salvar"))
+                : Container()
           ],
         ),
-        showBox == true ? Container (
-          width: 300,
-          padding: EdgeInsets.all(15),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(5.0)),
-            color: const Color.fromARGB(255, 88, 81, 81)
-          ),
-          child: Text(_text_translated, 
-            style: TextStyle(color: Colors.white, fontSize: 15, decoration: TextDecoration.none),),
-        ) : Container()
+        showBox == true
+            ? Container(
+                width: 300,
+                padding: EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    color: const Color.fromARGB(255, 88, 81, 81)),
+                child: Text(
+                  _text_translated,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      decoration: TextDecoration.none),
+                ),
+              )
+            : Container()
       ],
     );
   }
