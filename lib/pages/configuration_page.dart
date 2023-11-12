@@ -25,11 +25,12 @@ class _ConfigPageState extends State<ConfigPage> {
     });
   }
 
-  List<String> themeItems = ["Tema do sistema", "Darkmode", "Lightmode"];
+  List<String> themeItems = ["Sistema", "Darkmode", "Lightmode"];
 
   List<String> languageItems = [
     "Africâner",
     "Albanês",
+    "Alemão",
     "Amárico",
     "Árabe",
     "Armênio",
@@ -38,33 +39,45 @@ class _ConfigPageState extends State<ConfigPage> {
     "Azerbaijano",
     "Bambara",
     "Basco",
-    "Bielorrusso",
     "Bengalês",
+    "Bielorrusso",
+    "Birmanês",
     "Boiapuri",
     "Bósnio",
     "Búlgaro",
+    "Canarês",
     "Catalão",
+    "Cazaque",
     "Cebuano",
+    "Chichewa",
     "Chinês (simp)",
     "Chinês (trad)",
+    "Cingalês",
+    "Cmer",
+    "Concani",
+    "Coreano",
+    // "Coreano",
     "Córsico",
     "Croata",
-    "Tcheco",
-    "Coreano",
+    "Curdo",
+    "Curdo (Sorani)",
     "Divehi",
     "Dogri",
-    "Holandês",
-    "Inglês",
+    "Escocês",
+    "Eslovaco",
+    "Esloveno",
+    "Espanhol",
     "Esperanto",
     "Estoniano",
     "Ewe",
+    "Filipino",
     // "Filipino",
     "Finlandês",
     "Francês",
     "Frísio",
     "Galego",
+    "Galês",
     "Georgiano",
-    "Alemão",
     "Grego",
     "Guarani",
     "Gujarati",
@@ -74,25 +87,20 @@ class _ConfigPageState extends State<ConfigPage> {
     "Hebraico",
     "Hindi",
     "Hmong",
+    "Holandês",
     "Húngaro",
-    "Islandês",
+    "Ídiche",
     "Igbo",
     "Ilocano",
     "Indonésio",
+    "Inglês",
+    "Iorubá",
     "Irlandês",
+    "Islandês",
     "Italian",
     "Japonês",
     "Javanês",
-    "Canarês",
-    "Cazaque",
-    "Cmer",
-    "Quiniaruanda",
-    "Concani",
-    // "Coreano",
     "Krio",
-    "Curdo",
-    "Curdo (Sorani)",
-    "Quirguiz",
     "Laosiano",
     "Latim",
     "Letão",
@@ -102,19 +110,17 @@ class _ConfigPageState extends State<ConfigPage> {
     "Luxemburguês",
     "Macedônio",
     "Maithili",
-    "Malgaxe",
-    "Malaio",
     "Malaiala",
+    "Malaio",
+    "Malgaxe",
     "Maltês",
+    "Manipuri",
     "Maori",
     "Marata",
-    "Manipuri",
     "Mizo",
     "Mongol",
-    "Birmanês",
     "Nepalês",
     "Norueguês",
-    "Chichewa",
     "Oriá",
     "Oromo",
     "Pashto",
@@ -123,30 +129,26 @@ class _ConfigPageState extends State<ConfigPage> {
     "Português",
     "Punjabi",
     "Quíchua",
+    "Quiniaruanda",
+    "Quirguiz",
     "Romeno",
     "Russo",
     "Samoano",
     "Sânscrito",
-    "Escocês",
     "Sepedi",
     "Sérvio",
     "Sesoto",
-    "Xona",
     "Sindi",
-    "Cingalês",
-    "Eslovaco",
-    "Esloveno",
     "Somali",
-    "Espanhol",
-    "Sundanês",
     "Suaíli",
     "Sueco",
-    "Filipino",
+    "Sundanês",
+    "Tailandês",
     "Tajique",
     "Tâmil",
     "Tártaro",
+    "Tcheco",
     "Telugu",
-    "Tailandês",
     "Tigrínia",
     "Tsonga",
     "Turco",
@@ -154,19 +156,16 @@ class _ConfigPageState extends State<ConfigPage> {
     "Twi",
     "Ucraniano",
     "Urdu",
-    "Uyghur",
     "Usbeque",
+    "Uyghur",
     "Vietnamita",
-    "Galês",
+    "Xona",
     "Xosa",
-    "Ídiche",
-    "Iorubá",
-    "Zulu"
+    "Zulu",
   ];
 
   @override
   Widget build(BuildContext context) {
-    String? selectedInputLanguage = controller.inputLanguage;
     String? selectedOutputLanguage = controller.outputLanguage;
 
     final themeProvider = Provider.of<AppThemeProvider>(context);
@@ -196,15 +195,16 @@ class _ConfigPageState extends State<ConfigPage> {
                       alignment: Alignment.centerLeft,
                       child: SizedBox(
                           height: height! / 10,
-                          width: width! / 2.2,
+                          width: width! / 2,
                           child: Center(
                               child: Text("Tema padrão",
-                                  style: TextStyle(fontSize: 24))))),
+                                  style: TextStyle(fontSize: width! / 18),
+                                  textAlign: TextAlign.center)))),
                   Align(
                       alignment: Alignment.centerLeft,
                       child: SizedBox(
                           height: height! / 10,
-                          width: width! / 2.1,
+                          width: width! / 2,
                           child: Center(
                               child: DropdownButton<String>(
                                   value: selectedItem,
@@ -212,7 +212,8 @@ class _ConfigPageState extends State<ConfigPage> {
                                       .map((item) => DropdownMenuItem<String>(
                                             value: item,
                                             child: Text(item,
-                                                style: TextStyle(fontSize: 20)),
+                                                style: TextStyle(
+                                                    fontSize: width! / 18)),
                                           ))
                                       .toList(),
                                   onChanged: (item) => setState(() => {
@@ -228,8 +229,7 @@ class _ConfigPageState extends State<ConfigPage> {
                                           }
                                         else
                                           {
-                                            themeProvider
-                                                .toggleTheme("Tema do sistema")
+                                            themeProvider.toggleTheme("Sistema")
                                           },
                                         selectedItem = item
                                       }))))),
@@ -245,42 +245,21 @@ class _ConfigPageState extends State<ConfigPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Align(
-                      alignment: Alignment.centerLeft,
+                      alignment: Alignment.center,
                       child: SizedBox(
                           height: height! / 10,
-                          width: width!,
+                          width: width! / 2,
                           child: Center(
-                              child: Text("Seleção de linguagens",
-                                  style: TextStyle(fontSize: 24))))),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
+                              child: Text(
+                            "Linguagem de tradução",
+                            style: TextStyle(fontSize: width! / 18),
+                            textAlign: TextAlign.center,
+                          )))),
                   Align(
-                      alignment: Alignment.centerLeft,
+                      alignment: Alignment.center,
                       child: SizedBox(
                           height: height! / 10,
-                          width: width! / 2.2,
-                          child: Center(
-                              child: DropdownButton<String>(
-                                  value: selectedInputLanguage,
-                                  items: languageItems
-                                      .map((item) => DropdownMenuItem<String>(
-                                            value: item,
-                                            child: Text(item,
-                                                style: TextStyle(fontSize: 20)),
-                                          ))
-                                      .toList(),
-                                  onChanged: (item) => setState(
-                                      () => selectedInputLanguage = item))))),
-                  const Icon(Icons.arrow_forward),
-                  Align(
-                      alignment: Alignment.centerLeft,
-                      child: SizedBox(
-                          height: height! / 10,
-                          width: width! / 2.2,
+                          width: width! / 2,
                           child: Center(
                               child: DropdownButton<String>(
                                   value: selectedOutputLanguage,
@@ -288,7 +267,8 @@ class _ConfigPageState extends State<ConfigPage> {
                                       .map((item) => DropdownMenuItem<String>(
                                             value: item,
                                             child: Text(item,
-                                                style: TextStyle(fontSize: 20)),
+                                                style: TextStyle(
+                                                    fontSize: width! / 18)),
                                           ))
                                       .toList(),
                                   onChanged: (item) => setState(() => controller

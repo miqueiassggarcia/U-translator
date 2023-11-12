@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ConfigurationController extends ChangeNotifier {
-  late String inputLanguage;
   late String outputLanguage;
 
   Map<String, dynamic> languagesCodes = {
     "Africâner": "af",
     "Albanês": "sq",
+    "Alemão": "de",
     "Amárico": "am",
     "Árabe": "ar",
     "Armênio": "hy",
@@ -16,33 +16,45 @@ class ConfigurationController extends ChangeNotifier {
     "Azerbaijano": "az",
     "Bambara": "bm",
     "Basco": "eu",
-    "Bielorrusso": "be",
     "Bengalês": "bn",
+    "Bielorrusso": "be",
+    "Birmanês": "my",
     "Boiapuri": "bho",
     "Bósnio": "bs",
     "Búlgaro": "bg",
+    "Canarês": "kn",
     "Catalão": "ca",
+    "Cazaque": "kk",
     "Cebuano": "ceb",
+    "Chichewa": "ny",
     "Chinês (simp)": "zh-CN",
     "Chinês (trad)": "zh-TW",
+    "Cingalês": "si",
+    "Cmer": "km",
+    "Concani": "gom",
+    "Coreano": "da",
+    // "Coreano": "ko",
     "Córsico": "co",
     "Croata": "hr",
-    "Tcheco": "cs",
-    "Coreano": "da",
+    "Curdo": "ku",
+    "Curdo (Sorani)": "ckb",
     "Divehi": "dv",
     "Dogri": "doi",
-    "Holandês": "nl",
-    "Inglês": "en",
+    "Escocês": "gd",
+    "Eslovaco": "sk",
+    "Esloveno": "sl",
+    "Espanhol": "es",
     "Esperanto": "eo",
     "Estoniano": "et",
     "Ewe": "ee",
     "Filipino": "fil",
+    // "Filipino": "tl",
     "Finlandês": "fi",
     "Francês": "fr",
     "Frísio": "fy",
     "Galego": "gl",
+    "Galês": "cy",
     "Georgiano": "ka",
-    "Alemão": "de",
     "Grego": "el",
     "Guarani": "gn",
     "Gujarati": "gu",
@@ -52,25 +64,20 @@ class ConfigurationController extends ChangeNotifier {
     "Hebraico": "he",
     "Hindi": "hi",
     "Hmong": "hmn",
+    "Holandês": "nl",
     "Húngaro": "hu",
-    "Islandês": "is",
+    "Ídiche": "yi",
     "Igbo": "ig",
     "Ilocano": "ilo",
     "Indonésio": "id",
+    "Inglês": "en",
+    "Iorubá": "yo",
     "Irlandês": "ga",
+    "Islandês": "is",
     "Italian": "it",
     "Japonês": "ja",
     "Javanês": "jv",
-    "Canarês": "kn",
-    "Cazaque": "kk",
-    "Cmer": "km",
-    "Quiniaruanda": "rw",
-    "Concani": "gom",
-    // "Coreano": "ko",
     "Krio": "kri",
-    "Curdo": "ku",
-    "Curdo (Sorani)": "ckb",
-    "Quirguiz": "ky",
     "Laosiano": "lo",
     "Latim": "la",
     "Letão": "lv",
@@ -80,19 +87,17 @@ class ConfigurationController extends ChangeNotifier {
     "Luxemburguês": "lb",
     "Macedônio": "mk",
     "Maithili": "mai",
-    "Malgaxe": "mg",
-    "Malaio": "ms",
     "Malaiala": "ml",
+    "Malaio": "ms",
+    "Malgaxe": "mg",
     "Maltês": "mt",
+    "Manipuri": "mni-Mtei",
     "Maori": "mi",
     "Marata": "mr",
-    "Manipuri": "mni-Mtei",
     "Mizo": "lus",
     "Mongol": "mn",
-    "Birmanês": "my",
     "Nepalês": "ne",
     "Norueguês": "no",
-    "Chichewa": "ny",
     "Oriá": "or",
     "Oromo": "om",
     "Pashto": "ps",
@@ -101,30 +106,26 @@ class ConfigurationController extends ChangeNotifier {
     "Português": "pt",
     "Punjabi": "pa",
     "Quíchua": "qu",
+    "Quiniaruanda": "rw",
+    "Quirguiz": "ky",
     "Romeno": "ro",
     "Russo": "ru",
     "Samoano": "sm",
     "Sânscrito": "sa",
-    "Escocês": "gd",
     "Sepedi": "nso",
     "Sérvio": "sr",
     "Sesoto": "st",
-    "Xona": "sn",
     "Sindi": "sd",
-    "Cingalês": "si",
-    "Eslovaco": "sk",
-    "Esloveno": "sl",
     "Somali": "so",
-    "Espanhol": "es",
-    "Sundanês": "su",
     "Suaíli": "sw",
     "Sueco": "sv",
-    // "Filipino": "tl",
+    "Sundanês": "su",
+    "Tailandês": "th",
     "Tajique": "tg",
     "Tâmil": "ta",
     "Tártaro": "tt",
+    "Tcheco": "cs",
     "Telugu": "te",
-    "Tailandês": "th",
     "Tigrínia": "ti",
     "Tsonga": "ts",
     "Turco": "tr",
@@ -132,46 +133,29 @@ class ConfigurationController extends ChangeNotifier {
     "Twi": "ak",
     "Ucraniano": "uk",
     "Urdu": "ur",
-    "Uyghur": "ug",
     "Usbeque": "uz",
+    "Uyghur": "ug",
     "Vietnamita": "vi",
-    "Galês": "cy",
+    "Xona": "sn",
     "Xosa": "xh",
-    "Ídiche": "yi",
-    "Iorubá": "yo",
-    "Zulu": "zu"
+    "Zulu": "zu",
   };
-
-  String get getCodeFromInputLanguage {
-    return languagesCodes[inputLanguage];
-  }
 
   String get getCodeFromOutputLanguage {
     return languagesCodes[outputLanguage];
   }
 
-  static const _keyInputLanguage = 'imput_language';
   static const _keyOutputLanguage = 'output_language';
 
   ConfigurationController() {
-    inputLanguage = "Inglês";
     outputLanguage = "Português";
     changeIfLanguageSelected();
   }
 
   changeIfLanguageSelected() async {
-    String inputLang = await getInputLanguage();
     String outputLang = await getOutputLanguage();
 
-    inputLanguage = inputLang;
     outputLanguage = outputLang;
-
-    notifyListeners();
-  }
-
-  changeInputLanguage(String language) {
-    inputLanguage = language;
-    setInputLanguage(language);
 
     notifyListeners();
   }
@@ -181,24 +165,6 @@ class ConfigurationController extends ChangeNotifier {
     setOutputLanguage(language);
 
     notifyListeners();
-  }
-
-  Future<void> setInputLanguage(String language) async {
-    final prefs = await SharedPreferences.getInstance();
-
-    await prefs.setString(_keyInputLanguage, language);
-  }
-
-  Future<String> getInputLanguage() async {
-    final prefs = await SharedPreferences.getInstance();
-    String? language = prefs.getString(_keyInputLanguage);
-
-    if (language != null) {
-      return language;
-    } else {
-      setInputLanguage("Inglês");
-      return "Inglês";
-    }
   }
 
   Future<void> setOutputLanguage(String language) async {
