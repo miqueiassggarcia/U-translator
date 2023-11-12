@@ -195,16 +195,16 @@ class _ConfigPageState extends State<ConfigPage> {
                       alignment: Alignment.centerLeft,
                       child: SizedBox(
                           height: height! / 10,
-                          width: width! / 2,
+                          width: width! / 2.1,
                           child: Center(
                               child: Text("Tema padrão",
-                                  style: TextStyle(fontSize: width! / 18),
+                                  style: TextStyle(fontSize: 18),
                                   textAlign: TextAlign.center)))),
                   Align(
                       alignment: Alignment.centerLeft,
                       child: SizedBox(
                           height: height! / 10,
-                          width: width! / 2,
+                          width: width! / 2.1,
                           child: Center(
                               child: DropdownButton<String>(
                                   value: selectedItem,
@@ -212,8 +212,7 @@ class _ConfigPageState extends State<ConfigPage> {
                                       .map((item) => DropdownMenuItem<String>(
                                             value: item,
                                             child: Text(item,
-                                                style: TextStyle(
-                                                    fontSize: width! / 18)),
+                                                style: TextStyle(fontSize: 18)),
                                           ))
                                       .toList(),
                                   onChanged: (item) => setState(() => {
@@ -248,18 +247,18 @@ class _ConfigPageState extends State<ConfigPage> {
                       alignment: Alignment.center,
                       child: SizedBox(
                           height: height! / 10,
-                          width: width! / 2,
+                          width: width! / 2.1,
                           child: Center(
                               child: Text(
                             "Linguagem de tradução",
-                            style: TextStyle(fontSize: width! / 18),
+                            style: TextStyle(fontSize: 18),
                             textAlign: TextAlign.center,
                           )))),
                   Align(
                       alignment: Alignment.center,
                       child: SizedBox(
                           height: height! / 10,
-                          width: width! / 2,
+                          width: width! / 2.1,
                           child: Center(
                               child: DropdownButton<String>(
                                   value: selectedOutputLanguage,
@@ -267,8 +266,7 @@ class _ConfigPageState extends State<ConfigPage> {
                                       .map((item) => DropdownMenuItem<String>(
                                             value: item,
                                             child: Text(item,
-                                                style: TextStyle(
-                                                    fontSize: width! / 18)),
+                                                style: TextStyle(fontSize: 18)),
                                           ))
                                       .toList(),
                                   onChanged: (item) => setState(() => controller
