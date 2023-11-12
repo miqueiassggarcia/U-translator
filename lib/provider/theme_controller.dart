@@ -7,7 +7,7 @@ class AppThemeProvider extends ChangeNotifier {
   late ThemeMode themeMode;
 
   AppThemeProvider() {
-    currentTheme = "Tema do sistema";
+    currentTheme = "Sistema";
     themeMode = ThemeMode.system;
     getThemePreferences();
   }
@@ -30,7 +30,7 @@ class AppThemeProvider extends ChangeNotifier {
   }
 
   bool get isDarkMode {
-    if (currentTheme != "Tema do sistema") {
+    if (currentTheme != "Sistema") {
       return currentTheme == "Darkmode";
     } else {
       var brightness =
@@ -63,7 +63,7 @@ class ThemePreferences {
     if (theme != null) {
       return theme;
     } else {
-      return "Tema do sistema";
+      return "Sistema";
     }
   }
 }

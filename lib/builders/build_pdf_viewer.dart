@@ -6,12 +6,14 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:invert_colors/invert_colors.dart';
+import 'package:utranslator/controllers/drawer_status_controller.dart';
 import 'package:utranslator/controllers/home_page_body_controller.dart';
 import 'package:utranslator/controllers/initial_page_controller.dart';
 import 'package:utranslator/provider/theme_controller.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_cloud_translation/google_cloud_translation.dart';
 import 'package:utranslator/pages/initial_page.dart';
+import 'package:utranslator/controllers/configuration_controller.dart';
 
 class PDFViewerBody extends StatefulWidget {
   final String? pdfPath;
@@ -55,7 +57,6 @@ class _PDFViewerBodyState extends State<PDFViewerBody> {
     _pdfViewerController = PdfViewerController();
     _pdfViewerController.jumpToPage(currentPage);
 
-    print("iniciou");
     String ak = dotenv.env['APIKEY'] as String;
     _translation = Translation(apiKey: ak);
   }
@@ -65,21 +66,25 @@ class _PDFViewerBodyState extends State<PDFViewerBody> {
     final OverlayState _overlayState = Overlay.of(context);
     _overlayEntry = OverlayEntry(
         builder: (context) => Positioned(
-              top: details.globalSelectedRegion!.center.dy - 55,
-              left: details.globalSelectedRegion!.bottomLeft.dx,
-              child: Row(children: [
-                ElevatedButton(
-                  child: Text("Traduzir"),
-                  onPressed: () async {
-                    _translated = (await _translation?.translate(
-                        text: details.selectedText as String, to: 'en'))!;
-                    print(_translated.translatedText);
-                  },
-                )
-              ]),
-            ));
+            top: details.globalSelectedRegion!.center.dy - 100,
+            left: details.globalSelectedRegion!.bottomLeft.dx,
+            child: OverlayTrasnlation(
+                text_selected: details.selectedText as String,
+                translateText: translateText)));
 
     _overlayState.insert(_overlayEntry!);
+  }
+
+  void _removeContextMenu() {
+    if (_overlayEntry != null) {
+      _overlayEntry!.remove();
+      _overlayEntry = null;
+    }
+  }
+
+  Future<String> translateText(String text, String to_language) async {
+    _translated = (await _translation?.translate(text: text, to: to_language))!;
+    return _translated.translatedText;
   }
 
   @override
@@ -99,8 +104,7 @@ class _PDFViewerBodyState extends State<PDFViewerBody> {
           controller: _pdfViewerController,
           onTextSelectionChanged: (PdfTextSelectionChangedDetails details) {
             if (details.selectedText == null && _overlayEntry != null) {
-              _overlayEntry!.remove();
-              _overlayEntry = null;
+              _removeContextMenu();
             } else if (details.selectedText != null && _overlayEntry == null) {
               _showContextMenu(context, details);
             }
@@ -161,9 +165,112 @@ class _PDFViewerBodyState extends State<PDFViewerBody> {
       ]);
     }
 
-    return themeProvider.isDarkMode
-        ? InvertColors(child: PDFBodyGenerator())
-        : PDFBodyGenerator();
+    return AnimatedBuilder(
+        animation: DrawerStatusController.instance,
+        builder: (context, child) {
+          if (DrawerStatusController.instance.drawnerOpened) {
+            _removeContextMenu();
+          }
+
+          return themeProvider.isDarkMode
+              ? InvertColors(child: PDFBodyGenerator())
+              : PDFBodyGenerator();
+        });
+  }
+}
+
+class OverlayTrasnlation extends StatefulWidget {
+  final String text_selected;
+  final Function translateText;
+
+  OverlayTrasnlation(
+      {required this.text_selected, required this.translateText});
+
+  @override
+  State<OverlayTrasnlation> createState() => _OverlayTrasnlationState(
+      text_selected: this.text_selected, translateText: this.translateText);
+}
+
+class _OverlayTrasnlationState extends State<OverlayTrasnlation> {
+  String text_selected;
+  Function translateText;
+  bool showBox = false;
+  bool canSave = false;
+  bool translated = false;
+  String _text_translated = "Traduzindo...";
+  ConfigurationController controller = ConfigurationController();
+  PDFWords _pdfWords = PDFWords();
+
+  _OverlayTrasnlationState(
+      {required this.text_selected, required this.translateText});
+
+  @override
+  void initState() {
+    super.initState();
+    controller.changeIfLanguageSelected();
+    controller.addListener(() {
+      setState(() {});
+    });
+  }
+
+  Future<void> _troggle_translate_pressed() async {
+    setState(() {
+      showBox = true;
+    });
+    if (text_selected.length < 200) {
+      String t = await translateText(
+          text_selected, controller.getCodeFromOutputLanguage);
+      setState(() {
+        _text_translated = t;
+        canSave = true;
+        translated = true;
+      });
+    } else {
+      setState(() {
+        _text_translated = "Texto muito longo";
+        canSave = false;
+      });
+    }
+  }
+
+  Future<void> _troggle_save_word_pressed() async {
+    PDFWords.addToWords(_text_translated);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            ElevatedButton(
+                child: Text("Traduzir"),
+                onPressed: !translated ? _troggle_translate_pressed : null),
+            translated
+                ? ElevatedButton(
+                    onPressed: _troggle_save_word_pressed,
+                    child: Text("Salvar"))
+                : Container()
+          ],
+        ),
+        showBox == true
+            ? Container(
+                width: 300,
+                padding: EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    color: const Color.fromARGB(255, 88, 81, 81)),
+                child: Text(
+                  _text_translated,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      decoration: TextDecoration.none),
+                ),
+              )
+            : Container()
+      ],
+    );
   }
 }
 
@@ -192,5 +299,33 @@ class PDFHistory {
 
     await prefs.setStringList(_key, history);
     return history;
+  }
+}
+
+class PDFWords {
+  static const _Word = 'pdf_Words';
+
+  static Future<List<String>> getWords() async {
+    final prefs = await SharedPreferences.getInstance();
+    final words = prefs.getStringList(_Word) ?? [];
+    return words;
+  }
+
+  static Future<List<String>> addToWords(String pdfWords) async {
+    final prefs = await SharedPreferences.getInstance();
+    final words = prefs.getStringList(_Word) ?? [];
+
+    if (words.contains(pdfWords)) {
+      words.remove(pdfWords);
+    }
+
+    words.insert(0, pdfWords);
+
+    if (words.length > 20) {
+      words.removeLast();
+    }
+
+    await prefs.setStringList(_Word, words);
+    return words;
   }
 }
