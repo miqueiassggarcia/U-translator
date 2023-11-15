@@ -15,12 +15,7 @@ Widget buildMenuItems(BuildContext context) => Container(
                 MaterialPageRoute(builder: (context) => const InitialPage())),
           ),
           ListTile(
-            leading: const Icon(Icons.workspace_premium),
-            title: const Text('Premium'),
-            onTap: () {},
-          ),
-          const Divider(color: Colors.black54),
-          ListTile(
+
             leading: const Icon(Icons.settings),
             title: const Text('Configurações'),
             onTap: () {

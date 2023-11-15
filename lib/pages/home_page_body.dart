@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:utranslator/builders/build_floating_file_button.dart';
 import 'package:utranslator/controllers/home_page_body_controller.dart';
+import 'package:utranslator/provider/theme_controller.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,7 +19,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    controller.getIfThePDFHasAlreadyBeenOpen(callbackPdfView);
+    controller.changeIfThePDFHasAlreadyBeenOpen(callbackPdfView);
+    controller.changeIfPDFOpen();
     controller.addListener(() {
       setState(() {});
     });
@@ -26,7 +28,7 @@ class _HomePageState extends State<HomePage> {
 
   void callbackPdfView(String pdfPath) {
     setState(() {
-      controller.changeBodyToPdfView(pdfPath);
+      controller.changeBodyToPdfView(pdfPath, 0);
     });
   }
 
