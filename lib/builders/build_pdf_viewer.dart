@@ -234,7 +234,7 @@ class _OverlayTrasnlationState extends State<OverlayTrasnlation> {
   }
 
   Future<void> _troggle_save_word_pressed() async {
-    PDFWords.addToWords(_text_translated);
+    PDFWords.addToWords(_text_translated, text_selected);
   }
 
   @override
@@ -311,17 +311,20 @@ class PDFWords {
     return words;
   }
 
-  static Future<List<String>> addToWords(String pdfWords) async {
+  static Future<List<String>> addToWords(String pdfWords, String wordpdf) async {
     final prefs = await SharedPreferences.getInstance();
     final words = prefs.getStringList(_Word) ?? [];
 
-    if (words.contains(pdfWords)) {
+    if (words.contains(pdfWords) && words.contains(wordpdf)) {
       words.remove(pdfWords);
+      words.remove(wordpdf);
     }
 
     words.insert(0, pdfWords);
+    words.insert(0, wordpdf);
 
-    if (words.length > 20) {
+    if (words.length > 50) {
+      words.removeLast();
       words.removeLast();
     }
 
