@@ -35,6 +35,7 @@ class PdfHistory extends StatelessWidget {
                   child: PdfThumbnail.fromFile(pdfPath, currentPage: 1,height: 50,backgroundColor:Colors.white,),
                 ),
                 title: Text(displayedFileName),
+
                 onTap: () {
                   callbackFunction(pdfPath);
                 },

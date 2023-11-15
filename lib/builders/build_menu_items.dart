@@ -15,6 +15,7 @@ Widget buildMenuItems(BuildContext context) => Container(
                 MaterialPageRoute(builder: (context) => const InitialPage())),
           ),
           ListTile(
+
             leading: const Icon(Icons.settings),
             title: const Text('Configurações'),
             onTap: () {
