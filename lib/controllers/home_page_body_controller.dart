@@ -28,7 +28,6 @@ class HomePageBodyController extends ChangeNotifier {
 
   Future<void> setIfThePDFHasAlreadyBeenOpen(bool isOpen) async {
     final prefs = await SharedPreferences.getInstance();
-
     await prefs.setBool(_keyIfOpen, isOpen);
   }
 
