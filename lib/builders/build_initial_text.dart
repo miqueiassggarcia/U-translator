@@ -15,18 +15,22 @@ class PhrasePageBody extends StatelessWidget {
         } else if (snapshot.hasError) {
           return Text('Erro ao carregar palavras: ${snapshot.error}');
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Text('Nenhum palavra no histórico.');
+          return Center(
+              child: const Text(
+            'Nenhum palavra no histórico.',
+            style: TextStyle(fontSize: 18),
+          ));
         } else {
           return ListView.builder(
-            itemCount: snapshot.data!.length,
-            itemBuilder: (context, index) {
-              final words = snapshot.data![index];
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                final words = snapshot.data![index];
                 return ListTile(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0.1),
-                title: Text(words),
-              );
-            }
-          );
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 0.1),
+                  title: Text(words),
+                );
+              });
         }
       },
     );
