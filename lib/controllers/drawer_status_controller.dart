@@ -4,9 +4,9 @@ class DrawerStatusController extends ChangeNotifier {
   static DrawerStatusController instance = DrawerStatusController();
 
   bool drawnerOpened = false;
-  
-  changeDrawnerStatus(bool new_state) {
-    drawnerOpened = new_state;
+
+  changeDrawnerStatus(bool newState) {
+    drawnerOpened = newState;
     notifyListeners();
   }
 }

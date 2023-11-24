@@ -11,12 +11,12 @@ class PhrasePageBody extends StatelessWidget {
       future: PDFWords.getWords(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
           return Text('Erro ao carregar palavras: ${snapshot.error}');
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Center(
-              child: const Text(
+          return const Center(
+              child: Text(
             'Nenhum palavra no histórico.',
             style: TextStyle(fontSize: 18),
           ));

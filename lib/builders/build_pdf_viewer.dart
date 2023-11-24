@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -10,7 +11,6 @@ import 'package:utranslator/controllers/drawer_status_controller.dart';
 import 'package:utranslator/controllers/home_page_body_controller.dart';
 import 'package:utranslator/controllers/initial_page_controller.dart';
 import 'package:utranslator/provider/theme_controller.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_cloud_translation/google_cloud_translation.dart';
 import 'package:utranslator/pages/initial_page.dart';
 import 'package:utranslator/controllers/configuration_controller.dart';
@@ -28,9 +28,9 @@ class PDFViewerBody extends StatefulWidget {
 
   @override
   State<PDFViewerBody> createState() => _PDFViewerBodyState(
-      pdfPath: this.pdfPath,
-      callbackFunction: this.callbackFunction,
-      currentPage: this.currentPage);
+      pdfPath: pdfPath,
+      callbackFunction: callbackFunction,
+      currentPage: currentPage);
 }
 
 class _PDFViewerBodyState extends State<PDFViewerBody> {
@@ -63,16 +63,16 @@ class _PDFViewerBodyState extends State<PDFViewerBody> {
 
   void _showContextMenu(
       BuildContext context, PdfTextSelectionChangedDetails details) {
-    final OverlayState _overlayState = Overlay.of(context);
+    final OverlayState contextMenuOverlayState = Overlay.of(context);
     _overlayEntry = OverlayEntry(
         builder: (context) => Positioned(
             top: details.globalSelectedRegion!.center.dy - 100,
             left: details.globalSelectedRegion!.bottomLeft.dx,
             child: OverlayTrasnlation(
-                text_selected: details.selectedText as String,
+                textSelected: details.selectedText as String,
                 translateText: translateText)));
 
-    _overlayState.insert(_overlayEntry!);
+    contextMenuOverlayState.insert(_overlayEntry!);
   }
 
   void _removeContextMenu() {
@@ -82,8 +82,8 @@ class _PDFViewerBodyState extends State<PDFViewerBody> {
     }
   }
 
-  Future<String> translateText(String text, String to_language) async {
-    _translated = (await _translation?.translate(text: text, to: to_language))!;
+  Future<String> translateText(String text, String toLanguage) async {
+    _translated = (await _translation?.translate(text: text, to: toLanguage))!;
     return _translated.translatedText;
   }
 
@@ -97,7 +97,7 @@ class _PDFViewerBodyState extends State<PDFViewerBody> {
       _file = File(pdfPath!);
     }
 
-    Widget PDFBodyGenerator() {
+    Widget pdfBodyGenerator() {
       return Stack(children: <Widget>[
         SfPdfViewer.file(
           _file!,
@@ -117,8 +117,8 @@ class _PDFViewerBodyState extends State<PDFViewerBody> {
           top: 10,
           left: 10,
           child: IconButton(
-            icon:
-                Icon(Icons.arrow_back_ios, color: Color.fromARGB(255, 0, 0, 0)),
+            icon: const Icon(Icons.arrow_back_ios,
+                color: Color.fromARGB(255, 0, 0, 0)),
             onPressed: () {
               setState(() {
                 initialPageController.openHeaderAndFooter();
@@ -137,7 +137,7 @@ class _PDFViewerBodyState extends State<PDFViewerBody> {
           left: 10,
           child: initialPageController.headerAndFooterIsActive
               ? IconButton(
-                  icon: Icon(Icons.arrow_downward_rounded,
+                  icon: const Icon(Icons.arrow_downward_rounded,
                       color: Color.fromARGB(255, 0, 0, 0)),
                   onPressed: () {
                     setState(() {
@@ -148,7 +148,7 @@ class _PDFViewerBodyState extends State<PDFViewerBody> {
                   },
                 )
               : IconButton(
-                  icon: Icon(Icons.arrow_upward_rounded,
+                  icon: const Icon(Icons.arrow_upward_rounded,
                       color: Color.fromARGB(255, 0, 0, 0)),
                   onPressed: () {
                     setState(() {
@@ -173,36 +173,35 @@ class _PDFViewerBodyState extends State<PDFViewerBody> {
           }
 
           return themeProvider.isDarkMode
-              ? InvertColors(child: PDFBodyGenerator())
-              : PDFBodyGenerator();
+              ? InvertColors(child: pdfBodyGenerator())
+              : pdfBodyGenerator();
         });
   }
 }
 
 class OverlayTrasnlation extends StatefulWidget {
-  final String text_selected;
+  final String textSelected;
   final Function translateText;
 
-  OverlayTrasnlation(
-      {required this.text_selected, required this.translateText});
+  const OverlayTrasnlation(
+      {super.key, required this.textSelected, required this.translateText});
 
   @override
   State<OverlayTrasnlation> createState() => _OverlayTrasnlationState(
-      text_selected: this.text_selected, translateText: this.translateText);
+      textSelected: textSelected, translateText: translateText);
 }
 
 class _OverlayTrasnlationState extends State<OverlayTrasnlation> {
-  String text_selected;
+  String textSelected;
   Function translateText;
   bool showBox = false;
   bool canSave = false;
   bool translated = false;
-  String _text_translated = "Traduzindo...";
+  String _textTranslated = "Traduzindo...";
   ConfigurationController controller = ConfigurationController();
-  PDFWords _pdfWords = PDFWords();
 
   _OverlayTrasnlationState(
-      {required this.text_selected, required this.translateText});
+      {required this.textSelected, required this.translateText});
 
   @override
   void initState() {
@@ -213,28 +212,28 @@ class _OverlayTrasnlationState extends State<OverlayTrasnlation> {
     });
   }
 
-  Future<void> _troggle_translate_pressed() async {
+  Future<void> troggleTranslatePressed() async {
     setState(() {
       showBox = true;
     });
-    if (text_selected.length < 200) {
+    if (textSelected.length < 200) {
       String t = await translateText(
-          text_selected, controller.getCodeFromOutputLanguage);
+          textSelected, controller.getCodeFromOutputLanguage);
       setState(() {
-        _text_translated = t;
+        _textTranslated = t;
         canSave = true;
         translated = true;
       });
     } else {
       setState(() {
-        _text_translated = "Texto muito longo";
+        _textTranslated = "Texto muito longo";
         canSave = false;
       });
     }
   }
 
-  Future<void> _troggle_save_word_pressed() async {
-    PDFWords.addToWords(_text_translated, text_selected);
+  Future<void> troggleSaveWordPressed() async {
+    PDFWords.addToWords(_textTranslated, textSelected);
   }
 
   @override
@@ -244,25 +243,25 @@ class _OverlayTrasnlationState extends State<OverlayTrasnlation> {
         Row(
           children: [
             ElevatedButton(
-                child: Text("Traduzir"),
-                onPressed: !translated ? _troggle_translate_pressed : null),
+                onPressed: !translated ? troggleTranslatePressed : null,
+                child: const Text("Traduzir")),
             translated
                 ? ElevatedButton(
-                    onPressed: _troggle_save_word_pressed,
-                    child: Text("Salvar"))
+                    onPressed: troggleSaveWordPressed,
+                    child: const Text("Salvar"))
                 : Container()
           ],
         ),
         showBox == true
             ? Container(
                 width: 300,
-                padding: EdgeInsets.all(15),
-                decoration: BoxDecoration(
+                padding: const EdgeInsets.all(15),
+                decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                    color: const Color.fromARGB(255, 88, 81, 81)),
+                    color: Color.fromARGB(255, 88, 81, 81)),
                 child: Text(
-                  _text_translated,
-                  style: TextStyle(
+                  _textTranslated,
+                  style: const TextStyle(
                       color: Colors.white,
                       fontSize: 15,
                       decoration: TextDecoration.none),
@@ -303,17 +302,18 @@ class PDFHistory {
 }
 
 class PDFWords {
-  static const _Word = 'pdf_Words';
+  static const word = 'pdf_Words';
 
   static Future<List<String>> getWords() async {
     final prefs = await SharedPreferences.getInstance();
-    final words = prefs.getStringList(_Word) ?? [];
+    final words = prefs.getStringList(word) ?? [];
     return words;
   }
 
-  static Future<List<String>> addToWords(String pdfWords, String wordpdf) async {
+  static Future<List<String>> addToWords(
+      String pdfWords, String wordpdf) async {
     final prefs = await SharedPreferences.getInstance();
-    final words = prefs.getStringList(_Word) ?? [];
+    final words = prefs.getStringList(word) ?? [];
 
     if (words.contains(pdfWords) && words.contains(wordpdf)) {
       words.remove(pdfWords);
@@ -328,7 +328,7 @@ class PDFWords {
       words.removeLast();
     }
 
-    await prefs.setStringList(_Word, words);
+    await prefs.setStringList(word, words);
     return words;
   }
 }

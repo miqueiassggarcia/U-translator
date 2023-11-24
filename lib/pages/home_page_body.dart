@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:utranslator/builders/build_floating_file_button.dart';
 import 'package:utranslator/controllers/home_page_body_controller.dart';
-import 'package:utranslator/provider/theme_controller.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

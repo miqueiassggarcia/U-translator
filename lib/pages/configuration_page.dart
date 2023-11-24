@@ -196,7 +196,7 @@ class _ConfigPageState extends State<ConfigPage> {
                       child: SizedBox(
                           height: height! / 10,
                           width: width! / 2.1,
-                          child: Center(
+                          child: const Center(
                               child: Text("Tema padrão",
                                   style: TextStyle(fontSize: 18),
                                   textAlign: TextAlign.center)))),
@@ -212,7 +212,8 @@ class _ConfigPageState extends State<ConfigPage> {
                                       .map((item) => DropdownMenuItem<String>(
                                             value: item,
                                             child: Text(item,
-                                                style: TextStyle(fontSize: 18)),
+                                                style: const TextStyle(
+                                                    fontSize: 18)),
                                           ))
                                       .toList(),
                                   onChanged: (item) => setState(() => {
@@ -248,7 +249,7 @@ class _ConfigPageState extends State<ConfigPage> {
                       child: SizedBox(
                           height: height! / 10,
                           width: width! / 2.1,
-                          child: Center(
+                          child: const Center(
                               child: Text(
                             "Linguagem de tradução",
                             style: TextStyle(fontSize: 18),
@@ -266,7 +267,8 @@ class _ConfigPageState extends State<ConfigPage> {
                                       .map((item) => DropdownMenuItem<String>(
                                             value: item,
                                             child: Text(item,
-                                                style: TextStyle(fontSize: 18)),
+                                                style: const TextStyle(
+                                                    fontSize: 18)),
                                           ))
                                       .toList(),
                                   onChanged: (item) => setState(() => controller

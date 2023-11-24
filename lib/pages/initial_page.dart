@@ -79,7 +79,7 @@ class _InitialPageState extends State<InitialPage> {
                 : null,
             body: PageView(
               controller: pageViewController,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               children: const [HomePage(), PhrasePageBody()],
             ));
       });

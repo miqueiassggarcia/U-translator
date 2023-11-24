@@ -11,7 +11,8 @@ Widget buildHeader(BuildContext context) => Container(
         ),
         Text(
           'U-translator',
-          style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),
         ),
         SizedBox(
           height: 12,
