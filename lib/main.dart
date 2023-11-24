@@ -1,15 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:utranslator/my_app.dart';
 import 'package:receive_intent/receive_intent.dart';
-import 'package:utranslator/controllers/home_page_body_controller.dart';
-import 'package:utranslator/builders/build_pdf_viewer.dart';
 import 'package:lecle_flutter_absolute_path/lecle_flutter_absolute_path.dart';
-import 'package:utranslator/builders/build_pdf_history.dart';
-import 'package:utranslator/pages/home_page_body.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
@@ -30,7 +25,7 @@ class MyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: Home(),
     );
   }
@@ -44,7 +39,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  late File _file;
+  late File newFile;
 
   @override
   void initState() {
@@ -59,15 +54,13 @@ class _HomeState extends State<Home> {
     if (receivedIntent != null) {
       if (receivedIntent.action == 'android.intent.action.VIEW' &&
           receivedIntent.data != null) {
-        print("teste");
-        print(receivedIntent);
         final pdfPath =
             receivedIntent.data!; // Extrai o caminho do arquivo da query do URL
         var path = await LecleFlutterAbsolutePath.getAbsolutePath(
             uri: pdfPath, fileExtension: "pdf");
         File url = File(path!);
         setState(() {
-          _file = url;
+          newFile = url;
         });
         // print(url);
         // runApp(PDFViewerBody(pdfPath: path!));
@@ -80,7 +73,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _file != null ? SfPdfViewer.file(_file) : Text("ola gostosa"),
+      body: SfPdfViewer.file(newFile),
     );
   }
 }

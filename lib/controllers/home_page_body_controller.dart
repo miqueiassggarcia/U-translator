@@ -32,7 +32,10 @@ class HomePageBodyController extends ChangeNotifier {
   }
 
   changeBodyToPdfView(String pdfPath, int currentPage) {
-    currentBody = PDFViewerBody(pdfPath: pdfPath, callbackFunction: setPDFOpen, currentPage: currentPage);
+    currentBody = PDFViewerBody(
+        pdfPath: pdfPath,
+        callbackFunction: setPDFOpen,
+        currentPage: currentPage);
     buttonIsActive = false;
     setIfThePDFHasAlreadyBeenOpen(true);
     setPDFOpen(pdfPath, currentPage);
@@ -47,10 +50,10 @@ class HomePageBodyController extends ChangeNotifier {
 
   Future<void> changeIfPDFOpen() async {
     final prefs = await SharedPreferences.getInstance();
-    List<String>? PDFProperties = prefs.getStringList(_keyPDFOpen);
+    List<String>? pdfProperties = prefs.getStringList(_keyPDFOpen);
 
-    if (PDFProperties != null && PDFProperties[0].isNotEmpty) {
-      changeBodyToPdfView(PDFProperties[0], int.parse(PDFProperties[1]));
+    if (pdfProperties != null && pdfProperties[0].isNotEmpty) {
+      changeBodyToPdfView(pdfProperties[0], int.parse(pdfProperties[1]));
     }
   }
 }
